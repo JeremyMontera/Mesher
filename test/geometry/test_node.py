@@ -3,6 +3,7 @@ import pytest
 from mesher.geometry.point import Point
 from mesher.geometry.ring import NeighborOption, Node
 
+
 @pytest.fixture
 def sample_data() -> list[int, Point]:
     """Generate sample points."""
@@ -13,11 +14,13 @@ def sample_data() -> list[int, Point]:
         Point(x=-0.06, y=0.09, ID=2),
     ]
 
+
 @pytest.fixture
 def sample_nodes(sample_data) -> list[Node]:
     """Generate sample nodes."""
 
     return [Node(point) for point in sample_data]
+
 
 def test_node_init(sample_nodes, sample_data):
     """Tests node construction."""
@@ -29,6 +32,7 @@ def test_node_init(sample_nodes, sample_data):
         assert node._left is None
         assert node._right is None
         assert node._value == point
+
 
 def test_node_neighbor_setter_error():
     """Tests that neighbor setter raises an error."""
@@ -45,6 +49,7 @@ def test_node_neighbor_setter_error():
 
     assert exc.value.args[0] == "The node to the right has already been set!"
 
+
 def test_node_neighbor_setter(sample_nodes):
     """Tests neighbor setter."""
 
@@ -57,6 +62,7 @@ def test_node_neighbor_setter(sample_nodes):
         assert node._left.value.ID == sample_nodes[n_before].value.ID
         assert node._right.value.ID == sample_nodes[n_after].value.ID
 
+
 def test_node_neighbor_getter(sample_nodes):
     """Tests neighbor getter."""
 
@@ -68,6 +74,7 @@ def test_node_neighbor_getter(sample_nodes):
 
         assert node.left.value.ID == sample_nodes[n_before].value.ID
         assert node.right.value.ID == sample_nodes[n_after].value.ID
+
 
 def test_node_neighbor_del_connection(sample_nodes):
     """Tests neighbor deleter."""
@@ -86,6 +93,7 @@ def test_node_neighbor_del_connection(sample_nodes):
 
         assert node._left is None
         assert node._right is None
+
 
 def test_node_has_connection(sample_nodes):
     """Tests neighbor connections status."""

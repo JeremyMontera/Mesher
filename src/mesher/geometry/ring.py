@@ -4,6 +4,7 @@ import enum
 
 from .abc import IPoint
 
+
 class NeighborOption(enum.Enum):
     """This allows the user to choose between the left or right neighbor."""
 
@@ -12,6 +13,7 @@ class NeighborOption(enum.Enum):
 
     RIGHT: int = 1
     """The right neighbor."""
+
 
 class Node:
 
@@ -65,7 +67,7 @@ class Node:
         """This gets the node immediately to the left of this node."""
 
         return self._left
-    
+
     @left.setter
     def left(self, node: Node) -> None:
         """
@@ -82,15 +84,15 @@ class Node:
 
         if self._left is not None:
             raise ValueError("The node to the left has already been set!")
-        
+
         self._left = node
-        
+
     @property
     def right(self) -> Node:
         """This gets the node immediately to the right of this node."""
 
         return self._right
-    
+
     @right.setter
     def right(self, node: Node) -> None:
         """
@@ -107,7 +109,7 @@ class Node:
 
         if self._right is not None:
             raise ValueError("The node to the right has already been set!")
-        
+
         self._right = node
 
     @property
