@@ -1,13 +1,7 @@
 mesh 1 - create point class
-    (1) implement point interface and write class against this          x
-        (a) Needs (x: float, y: float) (R) point with ID: int (R/W)     x
-        (b) Need to be able to see if two points are equal              x
-        (c) Need to be able to display point to the screen              x
-    (2) write unit tests                                                x
-    (3) docs...                                                         x
+    (1) implement point interface
+    (2) write point class against this interface
+    (3) write unit tests
+    (4) docs...
 
 mesh 2 - create ring class
-    (1) implement node interface and class implementation               x
-    (2) implement ring interface and ring implementation using nodes    x
-    (3) write unit tests                                                x
-    (4) docs...
