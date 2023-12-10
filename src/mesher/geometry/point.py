@@ -17,9 +17,21 @@ class Point(IPoint):
         y:      The y-position of the point (in meters).
     """
 
-    def __init__(self, *x: float, y: float, ID: int) -> None:
+    def __init__(self, *, x: float, y: float, ID: int) -> None:
         """
         Constructor...
+
+        Example:
+            ```py
+            >>> from mesher.geometry.point import Point
+            >>> point = Point(x=3.2, y=-4.6, ID=47)
+            >>> point.x
+            3.2
+            >>> point.y
+            -4.6
+            >>> point.ID
+            47
+            ```
 
         Args:
             x:
@@ -59,6 +71,17 @@ class Point(IPoint):
 
         TODO: update this when we can handle other units (e.g., feet, cm, ...)?
 
+        Example:
+            ```py
+            >>> point1 = Point(x=6.5, y=-7.6, ID=1)
+            >>> point2 = Point(x=6.5, y=-7.6, ID=2)
+            >>> point1 == point2
+            True
+            >>> point3 = Point(x=6.5, y=-7.7, ID=3)
+            >>> point1 == point3
+            False
+            ```
+
         Args:
             other:
                 ...
@@ -73,6 +96,12 @@ class Point(IPoint):
     def __str__(self) -> str:
         """
         This prints the current point instance to the screen.
+
+        Example:
+            ```py
+            >>> print(point)
+            Point(x=3.2, y=-4.6, ID=47)
+            ```
 
         Returns:
             ret:
