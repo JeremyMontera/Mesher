@@ -34,3 +34,10 @@ mesh 6 - reverse ring                               x
     (2) write implementation                        x
     (3) write unit tests                            x
     (4) docs...                                     x
+
+mesh 7 - remove collinear points
+    (1) update Point class to test collinears
+    (2) write implementation to delete points
+    (3) write implementation to delete collinears
+    (4) write unit tests
+    (5) docs...
