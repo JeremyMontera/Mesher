@@ -1,7 +1,14 @@
-mesh 1 - create point class
-    (1) implement point interface
-    (2) write point class against this interface
-    (3) write unit tests
-    (4) docs...
+mesh 1 - create point class                         x
+    (1) implement point interface                   x
+    (2) write point class against this interface    x
+    (3) write unit tests                            x
+    (4) docs...                                     x
 
-mesh 2 - create ring class
+mesh 2 - create ring class and properties
+    (1) implement node class                        x
+    (2) implement ring interface                    x
+    (3) write ring class properties                 x
+    (4) write unit tests
+    (5) docs...
+
+mesh 3 - fill in closing methods for ring

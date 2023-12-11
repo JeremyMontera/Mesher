@@ -1,6 +1,6 @@
 import pytest
 
-from mesher.geometry.point import Point
+from mesher.geometry.point import Point, cross_product
 
 
 @pytest.fixture
@@ -34,6 +34,27 @@ def test_point_init(sample_data, sample_points):
             assert getattr(point, f"{key}") == val[p]
 
 
+@pytest.mark.parametrize(
+    "op",
+    [
+        lambda x, y: x + y,
+        lambda x, y: x - y,
+    ],
+)
+def test_point_ops(op, sample_data, sample_points):
+    """This tests point addition and subtraction."""
+
+    for p in range(len(sample_points)):
+        p1: int = p
+        p2: int = (p + 1) % len(sample_points)
+
+        assert op(sample_points[p1], sample_points[p2]) == Point(
+            x=op(sample_data["x"][p1], sample_data["x"][p2]),
+            y=op(sample_data["y"][p1], sample_data["y"][p2]),
+            ID=sample_data["ID"][p1] + sample_data["ID"][p2],
+        )
+
+
 def test_point_equals(sample_points):
     """This tests point equality (within tolerance)."""
 
@@ -53,3 +74,17 @@ def test_point_string(sample_data, sample_points):
         y: float = sample_data["y"][p]
         ID: int = sample_data["ID"][p]
         assert str(point) == f"Point(x={x}, y={y}, ID={ID})"
+
+
+def test_cross_product(sample_data, sample_points):
+    """This tests the cross product between points."""
+
+    for p in range(len(sample_points)):
+        p1: int = p
+        p2: int = (p + 1) % len(sample_points)
+        ret: float = (
+            sample_data["x"][p1] * sample_data["y"][p2]
+            - sample_data["x"][p2] * sample_data["y"][p1]  # noqa: W503
+        )
+
+        assert cross_product(sample_points[p1], sample_points[p2]) == ret
