@@ -5,7 +5,7 @@ from mesher.geometry.ring import NeighborOption, Node
 
 
 @pytest.fixture
-def sample_data() -> list[int, Point]:
+def sample_data() -> list[Point]:
     """Generate sample points."""
 
     return [
@@ -32,6 +32,35 @@ def test_node_init(sample_nodes, sample_data):
         assert node._left is None
         assert node._right is None
         assert node._value == point
+
+
+def test_node_string(sample_nodes, sample_data):
+    """This tests printing the node to the screen."""
+
+    n: int = 0
+    for node, point in zip(sample_nodes, sample_data):
+        assert str(node) == (
+            "Node(\n"
+            f"\tvalue={str(point)},\n"
+            "\tleft.ID=None,\n"
+            "\tright.ID=None,\n"
+            ")"
+        )
+
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(sample_data)
+        node.left = sample_nodes[n_before]
+        node.right = sample_nodes[n_after]
+
+        assert str(node) == (
+            "Node(\n"
+            f"\tvalue={str(point)},\n"
+            f"\tleft.ID={sample_data[n_before].ID},\n"
+            f"\tright.ID={sample_data[n_after].ID},\n"
+            ")"
+        )
+
+        n += 1
 
 
 def test_node_neighbor_setter_error():

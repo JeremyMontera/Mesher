@@ -113,11 +113,24 @@ def test_ring_str(sample_rings, sample_points):
     """This tests that the ring is properly printed to the screen."""
 
     for scenario, ring in sample_rings.items():
-        ret: str = "Ring(\n\tpoints=[\n"
-        for point in sample_points[scenario]:
-            ret += f"\t\t{str(point)},\n"
+        print(f"{scenario=}")
+        ret: str = "Ring(\n\tnodes=[\n"
+        for n, point in enumerate(sample_points[scenario]):
+            if "closed" in scenario:
+                n_before: int = n - 1
+                n_after: int = (n + 1) % len(sample_points[scenario])
+                node: Node = Node(point)
+                node.left = Node(sample_points[scenario][n_before])
+                node.right = Node(sample_points[scenario][n_after])
+            elif "open" in scenario:
+                node: Node = Node(point)
+
+            ret += f"\t\t{str(node)},\n"
 
         ret += "\t]\n)"
+
+        print(ring)
+        print(ret)
 
         assert str(ring) == ret
 
@@ -225,6 +238,19 @@ def test_ring_add_point(sample_rings, sample_points):
 
             assert len(ring._nodes) == len(sample_points[scenario]) + 1
             assert ring._nodes[-1].value == Point(x=-1, y=-1, ID=10)
+
+
+def test_ring_close(sample_rings, sample_points):
+    """This tests closing open rings."""
+
+    ring: Ring = sample_rings["open,len>2"]
+    ring.close()
+    for n, node in enumerate(ring._nodes):
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(ring._nodes)
+
+        node.left.value.ID == sample_points["open,len>2"][n_before].ID
+        node.right.value.ID == sample_points["open,len>2"][n_after].ID
 
 
 @pytest.mark.parametrize(
