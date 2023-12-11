@@ -469,7 +469,15 @@ class Ring(IRing):
             float | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.close()
+            >>> ring.area
+            0.5
+            ```
         """
 
         if not self.closed:
@@ -496,7 +504,17 @@ class Ring(IRing):
             bool:
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.closed
+            False
+            >>> ring.close()
+            >>> ring.closed
+            True
+            ```
         """
 
         if len(self._nodes) <= 2:
@@ -519,7 +537,16 @@ class Ring(IRing):
             bool | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=2, y=2, ID=1))
+            >>> ring.add_point(Point(x=0, y=1, ID=2))
+            >>> ring.add_point(Pointx=-2, y=2, ID=3))
+            >>> ring.close()
+            >>> ring.is_convex
+            True
+            ```
         """
 
         if not self.closed:
@@ -549,7 +576,14 @@ class Ring(IRing):
             Orientation | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.orientation
+            <Orientation.CCW: 0>
+            ```
         """
 
         if not self.closed:
@@ -593,6 +627,19 @@ class Ring(IRing):
     def close(self) -> None:
         """
         This closes the ring.
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.closed
+            False
+            >>> ring.close()
+            >>> ring.closed
+            True
+            ```
         """
 
         if not self.closed or len(self) > 2:
@@ -647,7 +694,59 @@ class Ring(IRing):
                 ...
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.close()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=2,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=1,
+                right.ID=0,
+                    ),
+                ]
+            )
+            >>> ring.insert_point(Point(x=0.5, y=2, ID=3), 3)
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=1,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=0.5, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    )
+                ]
+            )
+            ```
         """
 
         closed: bool = self.closed
