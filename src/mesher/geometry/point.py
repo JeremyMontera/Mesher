@@ -64,6 +64,24 @@ class Point(IPoint):
         The y-position of the point (in meters)
         """
 
+    def __add__(self, other: IPoint) -> IPoint:
+        """
+        This adds together two points component-wise. This will assign the new point
+        an ID corresponding to the sum of the two points.
+
+        TODO: how to handle the IDs better?
+
+        Args:
+            other:
+                ...
+
+        Returns:
+            ret:
+                ...
+        """
+
+        return Point(x=self._x + other.x, y=self._y + other.y, ID=self._ID + other.ID)
+
     def __eq__(self, other: IPoint) -> bool:
         """
         This checks to see if two points have the same x- and y-positions (within a
@@ -109,6 +127,24 @@ class Point(IPoint):
         """
 
         return f"Point(x={self._x}, y={self._y}, ID={self._ID})"
+    
+    def __sub__(self, other: IPoint) -> IPoint:
+        """
+        This subtracts together two points component-wise. This will assign the new
+        point an ID corresponding to the sum of the two points.
+
+        TODO: how to handle the IDs better?
+
+        Args:
+            other:
+                ...
+
+        Returns:
+            ret:
+                ...
+        """
+
+        return Point(x=self._x - other.x, y=self._y - other.y, ID=self._ID + other.ID)
 
     @property
     def ID(self) -> int:
@@ -127,3 +163,22 @@ class Point(IPoint):
         """This gets the y-position of the point."""
 
         return self._y
+    
+def cross_product(point1: IPoint, point2: IPoint) -> float:
+    """
+    This computes the z-component of the cross product between the vectors pointing
+    from the origin to the each of the two points. If it is positive, then the angle
+    between the two vectors is CCW, else it is CW.
+
+    Args:
+        point1:
+            ...
+        point2:
+            ...
+
+    Returns:
+        ret:
+            ...
+    """
+
+    return point1.x * point2.y - point1.y * point2.x
