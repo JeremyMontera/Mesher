@@ -252,6 +252,31 @@ def test_ring_close(sample_rings, sample_points):
         node.right.value.ID == sample_points["open,len>2"][n_after].ID
 
 
+def test_ring_delete_point(sample_rings, sample_points):
+    """This tests deleting a point from a closed/open ring."""
+
+    for scenario, ring in sample_rings.items():
+        assert len(ring._nodes) == len(sample_points[scenario])
+        if ring.closed:
+            for n, node in enumerate(ring._nodes):
+                n_before: int = n - 1
+                n_after: int = (n + 1) % len(ring._nodes)
+
+                node.left.value.ID == sample_points[scenario][n_before].ID
+                node.right.value.ID == sample_points[scenario][n_after].ID
+
+        ring.delete_point(1)
+        del sample_points[scenario][1]
+        assert len(ring._nodes) == len(sample_points[scenario])
+        if ring.closed:
+            for n, node in enumerate(ring._nodes):
+                n_before: int = n - 1
+                n_after: int = (n + 1) % len(ring._nodes)
+
+                node.left.value.ID == sample_points[scenario][n_before].ID
+                node.right.value.ID == sample_points[scenario][n_after].ID
+
+
 @pytest.mark.parametrize(
     "scenario,point,loc",
     [
