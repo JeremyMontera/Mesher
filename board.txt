@@ -11,7 +11,14 @@ mesh 2 - create ring class and properties           x
     (4) write unit tests                            x
     (5) docs...                                     x
 
-mesh 3 - write add_point and find point methods
-    (1) Write methods according to interface        x
+mesh 3 - write add_point and find point methods     x
+    (1) write methods according to interface        x
     (2) write unit tests                            x
-    (3) Update docs                                 x
+    (3) update docs                                 x
+
+mesh 4 - write insert_point method
+    (1) decide how insert_point should be called
+        - can I call after being closed?
+    (2) implement insert_point based on this
+    (3) write unit tests
+    (4) update docs
