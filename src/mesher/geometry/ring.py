@@ -334,7 +334,22 @@ class Ring(IRing):
             return Orientation.CW
 
     def add_point(self, point: IPoint) -> None:
-        ...
+        """
+        This adds a point to the ring if the ring is not closed.
+
+        Args:
+            point:
+                ...
+
+        Raises:
+            ValueError:
+                You cannot add anymore points! This ring is closed!
+        """
+
+        if self.closed:
+            raise ValueError("You cannot add anymore points! This ring is closed!")
+        
+        self._nodes.append(Node(point))
 
     def close(self) -> None:
         ...
