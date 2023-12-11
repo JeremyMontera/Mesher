@@ -188,12 +188,12 @@ def test_ring_is_convex(sample_rings, scenario, result):
 @pytest.mark.parametrize(
     "scenario",
     [
-        ("closed,CCW,convex", ),
-        ("closed,CW,convex", ),
-        ("closed,CCW,concave", ),
-        ("closed,CW,concave", ),
-        ("open,len=2", ),
-        ("open,len>2", ),
+        ("closed,CCW,convex",),
+        ("closed,CW,convex",),
+        ("closed,CCW,concave",),
+        ("closed,CW,concave",),
+        ("open,len=2",),
+        ("open,len>2",),
     ],
 )
 def test_ring_orientation(sample_rings, scenario):
@@ -236,7 +236,7 @@ def test_ring_add_point(sample_rings, sample_points):
         ("closed,CW,concave", Point(x=0, y=1, ID=-1), 2),
         ("open,len=2", Point(x=0, y=1, ID=-1), 1),
         ("open,len>2", Point(x=0, y=1, ID=-1), 2),
-    ]
+    ],
 )
 def test_ring_find_point(sample_rings, scenario, point, loc):
     """This tests finding a point in a ring."""

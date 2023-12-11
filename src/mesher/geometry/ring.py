@@ -348,7 +348,7 @@ class Ring(IRing):
 
         if self.closed:
             raise ValueError("You cannot add anymore points! This ring is closed!")
-        
+
         self._nodes.append(Node(point))
 
     def close(self) -> None:
