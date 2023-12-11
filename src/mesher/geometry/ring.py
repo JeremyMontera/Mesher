@@ -903,10 +903,10 @@ class Ring(IRing):
         idxs: list[int] = list(range(len(self)))
         for i in range(len(self) - 1):
             n1: int = idxs[i % len(idxs)]
-            n2: int = idxs[(i+1) % len(idxs)]
-            n3: int = idxs[(i+2) % len(idxs)]
+            n2: int = idxs[(i + 1) % len(idxs)]
+            n3: int = idxs[(i + 2) % len(idxs)]
             if are_collinear(self[n1], self[n2], self[n3]):
-                del idxs[i+1]
+                del idxs[i + 1]
 
         self._nodes: list[Node] = [self._nodes[idx] for idx in idxs]
         for n, node in enumerate(self._nodes):
@@ -918,7 +918,6 @@ class Ring(IRing):
 
             node.left = self._nodes[n_before]
             node.right = self._nodes[n_after]
-
 
     def reverse_orientation(self) -> None:
         """

@@ -216,7 +216,7 @@ class Point(IPoint):
         """
 
         return self._y
-    
+
 
 def are_collinear(point1: Point, point2: Point, point3: Point) -> bool:
     """
