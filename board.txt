@@ -16,9 +16,9 @@ mesh 3 - write add_point and find point methods     x
     (2) write unit tests                            x
     (3) update docs                                 x
 
-mesh 4 - write insert_point method
-    (1) decide how insert_point should be called
+mesh 4 - write insert_point method                  x
+    (1) decide how insert_point should be called    x
         - can I call after being closed?
-    (2) implement insert_point based on this
-    (3) write unit tests
-    (4) update docs
+    (2) implement insert_point based on this        x
+    (3) write unit tests                            x
+    (4) update docs                                 x
