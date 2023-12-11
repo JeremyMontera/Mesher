@@ -649,6 +649,29 @@ class Ring(IRing):
                 node.left = self._nodes[n_before]
                 node.right = self._nodes[n_after]
 
+    def delete_point(self, location: int) -> None:
+        """
+        This deletes a point from a ring whether open or closed. It will also update
+        the connections for a closed ring - the nodes to the left and right of the
+        deleted node will be connected to each other.
+
+        Args:
+            location:
+                ...
+        """
+
+        if self.closed:
+            before: int = location - 1
+            after: int = (location + 1) % len(self)
+
+            self._nodes[before].del_connection(NeighborOption.RIGHT)
+            self._nodes[after].del_connection(NeighborOption.LEFT)
+
+            self._nodes[before].right = self._nodes[after]
+            self._nodes[after].left = self._nodes[before]
+
+        del self._nodes[location]
+
     def find_point(self, point: IPoint) -> int | None:
         """
         This finds if and where the point is in the ring.
