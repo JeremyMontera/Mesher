@@ -649,7 +649,6 @@ class Ring(IRing):
                 node.left = self._nodes[n_before]
                 node.right = self._nodes[n_after]
 
-
     def find_point(self, point: IPoint) -> int | None:
         """
         This finds if and where the point is in the ring.

@@ -22,3 +22,9 @@ mesh 4 - write insert_point method                  x
     (2) implement insert_point based on this        x
     (3) write unit tests                            x
     (4) update docs                                 x
+
+mesh 5 - write close method
+    (1) actually write the god damn method          x
+    (2) allow users to print nodes to screen        x
+    (2) write unit tests                            x
+    (3) update/add docs...                          x
