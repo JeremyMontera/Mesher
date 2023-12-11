@@ -4,7 +4,7 @@ import enum
 from typing import Iterable
 
 from .abc import IPoint, IRing
-from .point import cross_product
+from .point import are_collinear, cross_product
 
 
 class NeighborOption(enum.Enum):
@@ -649,6 +649,85 @@ class Ring(IRing):
                 node.left = self._nodes[n_before]
                 node.right = self._nodes[n_after]
 
+    def delete_point(self, location: int) -> None:
+        """
+        This deletes a point from a ring whether open or closed. It will also update
+        the connections for a closed ring - the nodes to the left and right of the
+        deleted node will be connected to each other.
+
+        Args:
+            location:
+                ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=2, y=0, ID=2))
+            >>> ring.add_point(Point(x=1, y=2, ID=3))
+            >>> ring.close()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=2, y=0, ID=2),
+                left.ID=1,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=1, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    ),
+                ]
+            )
+            >>> ring.delete_point(1)
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=2, y=0, ID=2),
+                left.ID=0,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=1, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    ),
+                ]
+            )
+            ```
+        """
+
+        if self.closed:
+            before: int = location - 1
+            after: int = (location + 1) % len(self)
+
+            self._nodes[before].del_connection(NeighborOption.RIGHT)
+            self._nodes[after].del_connection(NeighborOption.LEFT)
+
+            self._nodes[before].right = self._nodes[after]
+            self._nodes[after].left = self._nodes[before]
+
+        del self._nodes[location]
+
     def find_point(self, point: IPoint) -> int | None:
         """
         This finds if and where the point is in the ring.
@@ -761,7 +840,84 @@ class Ring(IRing):
             self._nodes[(location + 1) % len(self)].left = self._nodes[location]
 
     def remove_collinear(self) -> None:
-        ...
+        """
+        This removes any collinear points (nodes).
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=2, y=0, ID=2))
+            >>> ring.add_point(Point(x=1, y=2, ID=3))
+            >>> ring.close()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=2, y=0, ID=2),
+                left.ID=1,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=1, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    ),
+                ]
+            )
+            >>> ring.remove_collinear()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=2, y=0, ID=2),
+                left.ID=0,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=1, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    ),
+                ]
+            )
+            ```
+        """
+
+        idxs: list[int] = list(range(len(self)))
+        for i in range(len(self) - 1):
+            n1: int = idxs[i % len(idxs)]
+            n2: int = idxs[(i + 1) % len(idxs)]
+            n3: int = idxs[(i + 2) % len(idxs)]
+            if are_collinear(self[n1], self[n2], self[n3]):
+                del idxs[i + 1]
+
+        self._nodes: list[Node] = [self._nodes[idx] for idx in idxs]
+        for n, node in enumerate(self._nodes):
+            n_before: int = n - 1
+            n_after: int = (n + 1) % len(self._nodes)
+
+            node.del_connection(NeighborOption.LEFT)
+            node.del_connection(NeighborOption.RIGHT)
+
+            node.left = self._nodes[n_before]
+            node.right = self._nodes[n_after]
 
     def reverse_orientation(self) -> None:
         """

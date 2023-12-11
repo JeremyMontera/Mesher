@@ -148,6 +148,12 @@ class IRing(metaclass=abc.ABCMeta):
         ...
 
     @abc.abstractmethod
+    def delete_point(self, location: int) -> None:
+        """This deletes a point from a ring whether open or closed."""
+
+        ...
+
+    @abc.abstractmethod
     def find_point(self, point: IPoint) -> int | None:
         """This finds if and where the point is in the ring."""
 
