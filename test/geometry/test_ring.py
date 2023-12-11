@@ -245,3 +245,29 @@ def test_ring_find_point(sample_rings, scenario, point, loc):
         assert sample_rings[scenario].find_point(point) == loc
     else:
         assert sample_rings[scenario].find_point(point) is None
+
+
+def test_ring_insert_point_open(sample_rings, sample_points):
+    """This tests inserting a new point in an open ring."""
+
+    for scenario, ring in sample_rings.items():
+        if "open" in scenario:
+            ring.insert_point(Point(x=-1, y=-1, ID=10), 1)
+
+            assert len(ring._nodes) == len(sample_points[scenario]) + 1
+            assert ring._nodes[1].value == Point(x=-1, y=-1, ID=10)
+
+
+def test_ring_insert_point_closed(sample_rings, sample_points):
+    """This tests inserting a new point in an closed ring."""
+
+    for scenario, ring in sample_rings.items():
+        if "closed" in scenario:
+            ring.insert_point(Point(x=-1, y=-1, ID=10), 1)
+
+            assert len(ring._nodes) == len(sample_points[scenario]) + 1
+            assert ring._nodes[1].value == Point(x=-1, y=-1, ID=10)
+            assert ring._nodes[0].right.value.ID == 10
+            assert ring._nodes[1].left.value.ID == sample_points[scenario][0].ID
+            assert ring._nodes[1].right.value.ID == sample_points[scenario][1].ID
+            assert ring._nodes[2].left.value.ID == 10
