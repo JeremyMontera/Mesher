@@ -355,7 +355,21 @@ class Ring(IRing):
         ...
 
     def find_point(self, point: IPoint) -> int | None:
-        ...
+        """
+        This finds if and where the point is in the ring.
+
+        Args:
+            point:
+                ...
+
+        Returns:
+            index:
+                The location of the point (if it is in the ring).
+        """
+
+        for p, pnt in enumerate(self):
+            if point == pnt:
+                return p
 
     def find_self_intersections(self) -> list[tuple[int, int, IPoint]]:
         ...
