@@ -21,9 +21,16 @@ class Point(IPoint):
         """
         Constructor...
 
+        Args:
+            x:
+                The x-position of the point (in meters).
+            y:
+                The y-position of the point (in meters).
+            ID:
+                The ID of the point.
+
         Example:
             ```py
-            >>> from mesher.geometry.point import Point
             >>> point = Point(x=3.2, y=-4.6, ID=47)
             >>> point.x
             3.2
@@ -32,14 +39,6 @@ class Point(IPoint):
             >>> point.ID
             47
             ```
-
-        Args:
-            x:
-                The x-position of the point (in meters).
-            y:
-                The y-position of the point (in meters).
-            ID:
-                The ID of the point.
         """
 
         self._ID: int = ID
@@ -78,6 +77,15 @@ class Point(IPoint):
         Returns:
             ret:
                 ...
+
+        Example:
+            ```py
+            >>> point1 = Point(x=3.2, y=-4.6, ID=47)
+            >>> point2 = Point(x=-6.4, y=2.5, ID=33)
+            >>> result = point1 + point2
+            >>> str(result)
+            Point(x=-3.2, y=-2.1, ID=80)
+            ```
         """
 
         return Point(x=self._x + other.x, y=self._y + other.y, ID=self._ID + other.ID)
@@ -89,6 +97,14 @@ class Point(IPoint):
 
         TODO: update this when we can handle other units (e.g., feet, cm, ...)?
 
+        Args:
+            other:
+                ...
+
+        Returns:
+            flag:
+                ...
+
         Example:
             ```py
             >>> point1 = Point(x=6.5, y=-7.6, ID=1)
@@ -99,14 +115,6 @@ class Point(IPoint):
             >>> point1 == point3
             False
             ```
-
-        Args:
-            other:
-                ...
-
-        Returns:
-            flag:
-                ...
         """
 
         return abs(self._x - other.x) < TOL and abs(self._y - other.y) < TOL
@@ -115,15 +123,15 @@ class Point(IPoint):
         """
         This prints the current point instance to the screen.
 
+        Returns:
+            ret:
+                ...
+
         Example:
             ```py
             >>> print(point)
             Point(x=3.2, y=-4.6, ID=47)
             ```
-
-        Returns:
-            ret:
-                ...
         """
 
         return f"Point(x={self._x}, y={self._y}, ID={self._ID})"
@@ -142,25 +150,70 @@ class Point(IPoint):
         Returns:
             ret:
                 ...
+
+        Example:
+            ```py
+            >>> point1 = Point(x=3.2, y=-4.6, ID=47)
+            >>> point2 = Point(x=-6.4, y=2.5, ID=33)
+            >>> result = point1 - point2
+            >>> str(result)
+            Point(x=9.6, y=-7.1, ID=80)
+            ```
         """
 
         return Point(x=self._x - other.x, y=self._y - other.y, ID=self._ID + other.ID)
 
     @property
     def ID(self) -> int:
-        """This gets the ID of the point."""
+        """
+        This gets the ID of the point.
+
+        Type:
+            int
+
+        Example:
+            ```py
+            >>> point = Point(x=3.2, y=-4.6, ID=47)
+            >>> point.ID
+            47
+            ```
+        """
 
         return self._ID
 
     @property
     def x(self) -> float:
-        """This gets the x-position of the point."""
+        """
+        This gets the x-position of the point.
+
+        Type:
+            float
+
+        Example:
+            ```py
+            >>> point = Point(x=3.2, y=-4.6, ID=47)
+            >>> point.x
+            3.2
+            ```
+        """
 
         return self._x
 
     @property
     def y(self) -> float:
-        """This gets the y-position of the point."""
+        """
+        This gets the y-position of the point.
+
+        Type:
+            float
+
+        Example:
+            ```py
+            >>> point = Point(x=3.2, y=-4.6, ID=47)
+            >>> point.y
+            -4.6
+            ```
+        """
 
         return self._y
 
@@ -180,6 +233,16 @@ def cross_product(point1: IPoint, point2: IPoint) -> float:
     Returns:
         ret:
             ...
+
+    Example:
+        ```py
+        >>> point1 = Point(x=0.5, y=0.5, ID=0)
+        >>> point2 = Point(x=-0.5, y=0.5, ID=1)
+        >>> cross_product(point1, point2)
+        0.5
+        >>> cross_product(point2, point1)
+        -0.5
+        ```
     """
 
     return point1.x * point2.y - point1.y * point2.x

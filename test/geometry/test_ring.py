@@ -42,7 +42,7 @@ def sample_points() -> dict[str, list[Point]]:
         "open,len>2": [
             Point(x=0, y=0, ID=0),
             Point(x=1, y=0, ID=1),
-            Point(x=1, y=1, ID=2),
+            Point(x=0, y=1, ID=2),
         ],
     }
 
@@ -186,17 +186,17 @@ def test_ring_is_convex(sample_rings, scenario, result):
 
 
 @pytest.mark.parametrize(
-    "scenario,result",
+    "scenario",
     [
-        ("closed,CCW,convex", True),
-        ("closed,CW,convex", True),
-        ("closed,CCW,concave", False),
-        ("closed,CW,concave", False),
-        ("open,len=2", None),
-        ("open,len>2", None),
+        ("closed,CCW,convex",),
+        ("closed,CW,convex",),
+        ("closed,CCW,concave",),
+        ("closed,CW,concave",),
+        ("open,len=2",),
+        ("open,len>2",),
     ],
 )
-def test_ring_orientation(sample_rings, scenario, result):
+def test_ring_orientation(sample_rings, scenario):
     """This tests that the orientation of a closed ring is computed correctly."""
 
     if "closed" in scenario and "CCW" in scenario:
@@ -205,3 +205,43 @@ def test_ring_orientation(sample_rings, scenario, result):
         assert sample_rings[scenario].orientation == Orientation.CW
     elif "open" in scenario:
         assert sample_rings[scenario].orientation is None
+
+
+def test_ring_add_point_error_ring_closed(sample_rings):
+    """This tests that an error is raised when trying to add point to a closed ring."""
+
+    with pytest.raises(ValueError) as exc:
+        sample_rings["closed,CCW,convex"].add_point(Point(x=0, y=-1, ID=10))
+
+    assert exc.value.args[0] == "You cannot add anymore points! This ring is closed!"
+
+
+def test_ring_add_point(sample_rings, sample_points):
+    """This tests adding a point to an open ring."""
+
+    for scenario, ring in sample_rings.items():
+        if "open" in scenario:
+            ring.add_point(Point(x=-1, y=-1, ID=10))
+
+            assert len(ring._nodes) == len(sample_points[scenario]) + 1
+            assert ring._nodes[-1].value == Point(x=-1, y=-1, ID=10)
+
+
+@pytest.mark.parametrize(
+    "scenario,point,loc",
+    [
+        ("closed,CCW,convex", Point(x=0, y=1, ID=-1), None),
+        ("closed,CW,convex", Point(x=0, y=1, ID=-1), None),
+        ("closed,CCW,concave", Point(x=0, y=1, ID=-1), 2),
+        ("closed,CW,concave", Point(x=0, y=1, ID=-1), 2),
+        ("open,len=2", Point(x=0, y=1, ID=-1), 1),
+        ("open,len>2", Point(x=0, y=1, ID=-1), 2),
+    ],
+)
+def test_ring_find_point(sample_rings, scenario, point, loc):
+    """This tests finding a point in a ring."""
+
+    if loc is not None:
+        assert sample_rings[scenario].find_point(point) == loc
+    else:
+        assert sample_rings[scenario].find_point(point) is None
