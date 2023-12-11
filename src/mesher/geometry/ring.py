@@ -763,5 +763,69 @@ class Ring(IRing):
     def remove_collinear(self) -> None:
         ...
 
+    def reverse_orientation(self) -> None:
+        """
+        This reversed the orientation of a closed ring. This will also swap the left
+        and right connections of each node.
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.close()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=2,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=1,
+                right.ID=0,
+                    ),
+                ]
+            )
+            >>> ring.reverse_orientation()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=0,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=2,
+                right.ID=0,
+                    ),
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=1,
+                right.ID=2,
+                    ),
+                ]
+            )
+            ```
+        """
+
+        if self.closed:
+            self._nodes.reverse()
+            for node in self._nodes:
+                left, right = node.left, node.right
+                node.del_connection(NeighborOption.LEFT)
+                node.del_connection(NeighborOption.RIGHT)
+                node.left, node.right = right, left
+
     def split_ring(self) -> list[IRing]:
         ...
