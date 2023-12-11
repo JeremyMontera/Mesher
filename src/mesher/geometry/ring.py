@@ -594,7 +594,6 @@ class Ring(IRing):
             self._nodes[(location + 1) % len(self)].del_connection(NeighborOption.LEFT)
             self._nodes[(location + 1) % len(self)].left = self._nodes[location]
 
-
     def remove_collinear(self) -> None:
         ...
 
