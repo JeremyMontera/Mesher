@@ -130,8 +130,8 @@ class IRing(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def orientation(self) -> Literal:
-        """This gets the orientation of the ring if it is convex."""
+    def orientation(self) -> Literal | None:
+        """This gets the orientation of the ring."""
 
         ...
 

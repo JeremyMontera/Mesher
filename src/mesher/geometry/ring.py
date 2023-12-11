@@ -288,18 +288,23 @@ class Ring(IRing):
     def closed(self) -> bool:
         """This checks if the ring is closed."""
 
-        # TODO: fill this in
-
         if len(self._nodes) <= 2:
             return False
         
+        for node in self._nodes:
+            if (
+                not node.has_connection(NeighborOption.LEFT) or
+                not node.has_connection(NeighborOption.RIGHT)
+            ):
+                return False
+            
         return True
 
     @property
     def is_convex(self) -> bool | None:
         """This checks if the ring is convex or concave."""
 
-        if not self._closed:
+        if not self.closed:
             return None
 
         is_CCW: list[bool] = []
@@ -318,8 +323,16 @@ class Ring(IRing):
             return False
 
     @property
-    def orientation(self) -> Orientation:
-        ...
+    def orientation(self) -> Orientation | None:
+        """This gets the orientation of the ring."""
+
+        if not self.closed:
+            return None
+
+        if self.area > 0:
+            return Orientation.CCW
+        elif self.area < 0:
+            return Orientation.CW
 
     def add_point(self, point: IPoint) -> None:
         ...
