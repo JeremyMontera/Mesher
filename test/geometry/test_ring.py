@@ -306,7 +306,7 @@ def test_ring_insert_point_closed(sample_rings, sample_points):
         ("closed,CW,convex", Orientation.CW, Orientation.CCW),
         ("closed,CCW,concave", Orientation.CCW, Orientation.CW),
         ("closed,CW,concave", Orientation.CW, Orientation.CCW),
-    ]
+    ],
 )
 def test_ring_reverse_orientation(
     sample_rings, sample_points, scenario, orient1, orient2
