@@ -567,7 +567,33 @@ class Ring(IRing):
         ...
 
     def insert_point(self, point: IPoint, location: int) -> None:
-        ...
+        """
+        This inserts a point into the ring. This will insert the point at the given
+        index. If the ring is already closed, then it will delete the connections of
+        the nodes before and after this new point and connect themselves to the node.
+
+        Args:
+            point:
+                ...
+            location:
+                ...
+
+        Example:
+            TODO: fill in this example
+        """
+
+        closed: bool = self.closed
+        self._nodes.insert(location, Node(point))
+        if closed:
+            self._nodes[location - 1].del_connection(NeighborOption.RIGHT)
+            self._nodes[location - 1].right = self._nodes[location]
+
+            self._nodes[location].left = self._nodes[location - 1]
+            self._nodes[location].right = self._nodes[(location + 1) % len(self)]
+
+            self._nodes[(location + 1) % len(self)].del_connection(NeighborOption.LEFT)
+            self._nodes[(location + 1) % len(self)].left = self._nodes[location]
+
 
     def remove_collinear(self) -> None:
         ...
