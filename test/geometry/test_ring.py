@@ -113,7 +113,6 @@ def test_ring_str(sample_rings, sample_points):
     """This tests that the ring is properly printed to the screen."""
 
     for scenario, ring in sample_rings.items():
-        print(f"{scenario=}")
         ret: str = "Ring(\n\tnodes=[\n"
         for n, point in enumerate(sample_points[scenario]):
             if "closed" in scenario:

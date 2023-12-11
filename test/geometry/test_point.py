@@ -1,6 +1,6 @@
 import pytest
 
-from mesher.geometry.point import Point, cross_product
+from mesher.geometry.point import Point, are_collinear, cross_product
 
 
 @pytest.fixture
@@ -74,6 +74,18 @@ def test_point_string(sample_data, sample_points):
         y: float = sample_data["y"][p]
         ID: int = sample_data["ID"][p]
         assert str(point) == f"Point(x={x}, y={y}, ID={ID})"
+
+
+def test_collinear():
+    """This tests that the points are collinear."""
+
+    point1: Point = Point(x=0, y=0, ID=0)
+    point2: Point = Point(x=1, y=1, ID=1)
+    point3: Point = Point(x=1, y=1.01, ID=2)
+    point4: Point = Point(x=2, y=2, ID=3)
+
+    assert are_collinear(point1, point2, point4)
+    assert not are_collinear(point1, point3, point4)
 
 
 def test_cross_product(sample_data, sample_points):
