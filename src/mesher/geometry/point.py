@@ -216,6 +216,30 @@ class Point(IPoint):
         """
 
         return self._y
+    
+
+def are_collinear(point1: Point, point2: Point, point3: Point) -> bool:
+    """
+    This checks to see if three points are collinear. It will do this by computing
+    their cross product. If their cross product is zero, then they are collinear. This
+    will check this within tolerance.
+
+    Args:
+        point1:
+            ...
+        point2:
+            ...
+        point3:
+            ...
+
+    Returns:
+        flag:
+            ...
+    """
+
+    delta1: Point = point1 - point2
+    delta2: Point = point1 - point3
+    return abs(cross_product(delta1, delta2)) < TOL
 
 
 def cross_product(point1: IPoint, point2: IPoint) -> float:
