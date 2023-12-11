@@ -12,6 +12,6 @@ mesh 2 - create ring class and properties           x
     (5) docs...                                     x
 
 mesh 3 - write add_point and find point methods
-    (1) Write methods according to interface
-    (2) write unit tests
-    (3) Update docs
+    (1) Write methods according to interface        x
+    (2) write unit tests                            x
+    (3) Update docs                                 x
