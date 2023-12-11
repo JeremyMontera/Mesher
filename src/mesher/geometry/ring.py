@@ -75,8 +75,21 @@ class Node:
         """
 
     @property
-    def left(self) -> Node:
-        """This gets the node immediately to the left of this node."""
+    def left(self) -> Node | None:
+        """
+        This gets the node immediately to the left of this node.
+
+        Type:
+            Node | None
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.left = Node(Point(x=-1, y=0, ID=-1))
+            >>> print(node.left.value)
+            Point(x=-1, y=0, ID=-1)
+            ```
+        """
 
         return self._left
 
@@ -92,6 +105,14 @@ class Node:
         Raises:
             ValueError:
                 The node to the left has already been set!
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.left = Node(Point(x=-1, y=0, ID=-1))
+            >>> print(node.left.value)
+            Point(x=-1, y=0, ID=-1)
+            ```
         """
 
         if self._left is not None:
@@ -100,8 +121,21 @@ class Node:
         self._left = node
 
     @property
-    def right(self) -> Node:
-        """This gets the node immediately to the right of this node."""
+    def right(self) -> Node | None:
+        """
+        This gets the node immediately to the right of this node.
+
+        Type:
+            Node | None
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.right = Node(Point(x=1, y=0, ID=1))
+            >>> print(node.right.value)
+            Point(x=1, y=0, ID=1)
+            ```
+        """
 
         return self._right
 
@@ -117,6 +151,14 @@ class Node:
         Raises:
             ValueError:
                 The node to the right has already been set!
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.right = Node(Point(x=1, y=0, ID=1))
+            >>> print(node.right.value)
+            Point(x=1, y=0, ID=1)
+            ```
         """
 
         if self._right is not None:
@@ -126,7 +168,19 @@ class Node:
 
     @property
     def value(self) -> IPoint:
-        """This gets the point wrapped up by the node."""
+        """
+        This gets the point wrapped up by the node.
+
+        Type:
+            Point
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> print(node.value)
+            Point(x=0, y=0, ID=0)
+            ```
+        """
 
         return self._value
 
@@ -137,6 +191,16 @@ class Node:
         Args:
             option:
                 Which of the two neighbors to delete.
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.right = Node(Point(x=1, y=0, ID=1))
+            >>> node.right
+            <mesher.geometry.ring.Node object at ...>
+            >>> node.del_connection(NeighborOption.RIGHT)
+            >>> node.right
+            ```
         """
 
         if option == NeighborOption.LEFT:
@@ -155,6 +219,17 @@ class Node:
         Returns:
             flag:
                 ...
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> node.right = Node(Point(x=1, y=0, ID=1))
+            >>> node.right
+            <mesher.geometry.ring.Node object at ...>
+            >>> node.has_connection(NeighborOption.LEFT)
+            False
+            >>> node.has_connection(NeighborOption.RIGHT)
+            True
         """
 
         if option == NeighborOption.LEFT:
@@ -200,6 +275,18 @@ class Ring(IRing):
         Returns:
             flag:
                 ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> Point(x=1, y=0, ID=3) in ring
+            True
+            >>> Point(x=0, y=-1, ID=3) in ring
+            False
+            ```
         """
 
         for node in self._nodes:
@@ -222,6 +309,16 @@ class Ring(IRing):
         Returns:
             ret:
                 ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> str(ring[2])
+            Point(x=1, y=1, ID=2)
+            ```
         """
 
         return self._nodes[index].value
@@ -233,6 +330,20 @@ class Ring(IRing):
         Yields:
             point:
                 ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> for point in ring:
+            ...     print(point)
+            ...
+            Point(x=0, y=0, ID=0)
+            Point(x=1, y=0, ID=1)
+            Point(x=1, y=1, ID=2)
+            ```
         """
 
         for node in self._nodes:
@@ -245,6 +356,16 @@ class Ring(IRing):
         Returns:
             length:
                 ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> len(ring)
+            3
+            ```
         """
 
         return len(self._nodes)
@@ -256,6 +377,22 @@ class Ring(IRing):
         Returns:
             ret:
                 ...
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> print(ring)
+            Ring(
+                points=[
+                    Point(x=0, y=0, ID=0),
+                    Point(x=1, y=0, ID=1),
+                    Point(x=1, y=1, ID=2),
+                ]
+            )
+            ```
         """
 
         ret: str = "Ring(\n"
@@ -267,7 +404,15 @@ class Ring(IRing):
 
     @property
     def area(self) -> float | None:
-        """This computes the area enclosed by the closed ring."""
+        """
+        This computes the area enclosed by the closed ring.
+
+        Type:
+            float | None
+
+        Example:
+            TODO: fill in this example
+        """
 
         if not self.closed:
             return None
@@ -286,7 +431,15 @@ class Ring(IRing):
 
     @property
     def closed(self) -> bool:
-        """This checks if the ring is closed."""
+        """
+        This checks if the ring is closed.
+
+        Type:
+            bool:
+
+        Example:
+            TODO: fill in this example
+        """
 
         if len(self._nodes) <= 2:
             return False
@@ -301,7 +454,15 @@ class Ring(IRing):
 
     @property
     def is_convex(self) -> bool | None:
-        """This checks if the ring is convex or concave."""
+        """
+        This checks if the ring is convex or concave.
+
+        Type:
+            bool | None
+
+        Example:
+            TODO: fill in this example
+        """
 
         if not self.closed:
             return None
@@ -323,7 +484,15 @@ class Ring(IRing):
 
     @property
     def orientation(self) -> Orientation | None:
-        """This gets the orientation of the ring."""
+        """
+        This gets the orientation of the ring.
+
+        Type:
+            Orientation | None
+
+        Example:
+            TODO: fill in this example
+        """
 
         if not self.closed:
             return None
@@ -344,6 +513,18 @@ class Ring(IRing):
         Raises:
             ValueError:
                 You cannot add anymore points! This ring is closed!
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> len(ring)
+            0
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> len(ring)
+            1
+            >>> str(ring[0])
+            Point(x=0, y=0, ID=0)
+            ```
         """
 
         if self.closed:
@@ -365,6 +546,17 @@ class Ring(IRing):
         Returns:
             index:
                 The location of the point (if it is in the ring).
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.find_point(Point(x=1, y=0, ID=4))
+            1
+            >>> ring.find_point(Point(x=2, y=0, ID=4))
+            ```
         """
 
         for p, pnt in enumerate(self):
