@@ -161,7 +161,7 @@ class IRing(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def insert_point(self, point: IPoint, location: int) -> None:
-        """This inserts a point into the ring if the ring is not closed."""
+        """This inserts a point into the ring."""
 
         ...
 
