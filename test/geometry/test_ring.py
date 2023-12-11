@@ -1,6 +1,6 @@
 import pytest
 
-from mesher.geometry.ring import Node, Ring
+from mesher.geometry.ring import Node, Orientation, Ring
 from mesher.geometry.point import Point
 
 
@@ -8,7 +8,7 @@ from mesher.geometry.point import Point
 def sample_points() -> dict[str, list[Point]]:
     """Generates sample points from a number of scenarios for testing."""
 
-    # TODO: handle open rings, self-intersecting rings
+    # TODO: handle self-intersecting rings
 
     return {
         "closed,CCW,convex": [
@@ -35,6 +35,15 @@ def sample_points() -> dict[str, list[Point]]:
             Point(x=0, y=1, ID=2),
             Point(x=2, y=2, ID=3),
         ],
+        "open,len=2": [
+            Point(x=0, y=0, ID=0),
+            Point(x=0, y=1, ID=1),
+        ],
+        "open,len>2": [
+            Point(x=0, y=0, ID=0),
+            Point(x=1, y=0, ID=1),
+            Point(x=1, y=1, ID=2),
+        ]
     }
 
 
@@ -46,18 +55,25 @@ def sample_rings(sample_points: dict[str, list[Point]]) -> dict[str, Ring]:
     for scenario, points in sample_points.items():
         ring: Ring = Ring()
         ring._nodes: list[Node] = [Node(point) for point in points]
+        if "closed" in scenario:
+            for n in range(len(ring._nodes)):
+                n_before: int = n - 1
+                n_after: int = (n + 1) % len(ring._nodes)
+                ring._nodes[n].left = ring._nodes[n_before]
+                ring._nodes[n].right = ring._nodes[n_after]
+
         rings[scenario] = ring
 
     return rings
 
 
-def test_ring_init(sample_rings):
+def test_ring_init(sample_rings, sample_points):
     """Tests ring constructor."""
 
-    for _, ring in sample_rings.items():
+    for scenario, ring in sample_rings.items():
         assert hasattr(ring, "_nodes")
         assert isinstance(ring._nodes, list)
-        assert len(ring._nodes) == 4
+        assert len(ring._nodes) == len(sample_points[scenario])
 
 
 def test_ring_contains(sample_rings):
@@ -113,14 +129,79 @@ def test_ring_str(sample_rings, sample_points):
         ("closed,CW,convex", -2.0),
         ("closed,CCW,concave", 2.0),
         ("closed,CW,concave", -2.0),
+        ("open,len=2", None),
+        ("open,len>2", None),
     ]
 )
 def test_ring_area(sample_rings, scenario, result):
     """This tests that the area of a ring is properly computed."""
 
-    assert sample_rings[scenario].area == result
+    if "closed" in scenario:
+        assert sample_rings[scenario].area == result
+    elif "open" in scenario:
+        assert sample_rings[scenario].area is None
 
-# def test_ring_is_convex(sample_ring):
-#     """This tests that the concavity of a closed ring is computed correctly."""
+
+@pytest.mark.parametrize(
+    "scenario,flag",
+    [
+        ("closed,CCW,convex", True),
+        ("closed,CW,convex", True),
+        ("closed,CCW,concave", True),
+        ("closed,CW,concave", True),
+        ("open,len=2", False),
+        ("open,len>2", False),
+    ]
+)
+def test_ring_closed(sample_rings, scenario, flag):
+    """This tests that the ring is closed or not."""
+
+    if flag:
+        assert sample_rings[scenario].closed
+    else:
+        assert not sample_rings[scenario].closed
+
+
+@pytest.mark.parametrize(
+    "scenario,result",
+    [
+        ("closed,CCW,convex", True),
+        ("closed,CW,convex", True),
+        ("closed,CCW,concave", False),
+        ("closed,CW,concave", False),
+        ("open,len=2", None),
+        ("open,len>2", None),
+    ]
+)
+def test_ring_is_convex(sample_rings, scenario, result):
+    """This tests that the concavity of a closed ring is computed correctly."""
     
-#     ...
+    if "closed" in scenario:
+        if result:
+            assert sample_rings[scenario].is_convex
+        else:
+            assert not sample_rings[scenario].is_convex
+    elif "open" in scenario:
+        assert sample_rings[scenario].is_convex is None
+
+
+@pytest.mark.parametrize(
+    "scenario,result",
+    [
+        ("closed,CCW,convex", True),
+        ("closed,CW,convex", True),
+        ("closed,CCW,concave", False),
+        ("closed,CW,concave", False),
+        ("open,len=2", None),
+        ("open,len>2", None),
+    ]
+)
+def test_ring_orientation(sample_rings, scenario, result):
+    """This tests that the orientation of a closed ring is computed correctly."""
+
+    if "closed" in scenario and "CCW" in scenario:
+        assert sample_rings[scenario].orientation == Orientation.CCW
+    elif "closed" in scenario and "CW" in scenario:
+        assert sample_rings[scenario].orientation == Orientation.CW
+    elif "open" in scenario:
+        assert sample_rings[scenario].orientation is None
