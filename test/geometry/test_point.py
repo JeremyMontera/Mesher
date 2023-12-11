@@ -39,7 +39,7 @@ def test_point_init(sample_data, sample_points):
     [
         lambda x, y: x + y,
         lambda x, y: x - y,
-    ]
+    ],
 )
 def test_point_ops(op, sample_data, sample_points):
     """This tests point addition and subtraction."""
@@ -49,9 +49,9 @@ def test_point_ops(op, sample_data, sample_points):
         p2: int = (p + 1) % len(sample_points)
 
         assert op(sample_points[p1], sample_points[p2]) == Point(
-            x = op(sample_data["x"][p1], sample_data["x"][p2]),
-            y = op(sample_data["y"][p1], sample_data["y"][p2]),
-            ID = sample_data["ID"][p1] + sample_data["ID"][p2],
+            x=op(sample_data["x"][p1], sample_data["x"][p2]),
+            y=op(sample_data["y"][p1], sample_data["y"][p2]),
+            ID=sample_data["ID"][p1] + sample_data["ID"][p2],
         )
 
 
@@ -84,7 +84,7 @@ def test_cross_product(sample_data, sample_points):
         p2: int = (p + 1) % len(sample_points)
         ret: float = (
             sample_data["x"][p1] * sample_data["y"][p2]
-            - sample_data["x"][p2] * sample_data["y"][p1]
+            - sample_data["x"][p2] * sample_data["y"][p1]  # noqa: W503
         )
 
         assert cross_product(sample_points[p1], sample_points[p2]) == ret

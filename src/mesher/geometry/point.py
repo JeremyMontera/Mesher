@@ -127,7 +127,7 @@ class Point(IPoint):
         """
 
         return f"Point(x={self._x}, y={self._y}, ID={self._ID})"
-    
+
     def __sub__(self, other: IPoint) -> IPoint:
         """
         This subtracts together two points component-wise. This will assign the new
@@ -163,7 +163,8 @@ class Point(IPoint):
         """This gets the y-position of the point."""
 
         return self._y
-    
+
+
 def cross_product(point1: IPoint, point2: IPoint) -> float:
     """
     This computes the z-component of the cross product between the vectors pointing

@@ -161,7 +161,7 @@ class Node:
             return self._left is not None
         elif option == NeighborOption.RIGHT:
             return self._right is not None
-        
+
 
 class Ring(IRing):
 
@@ -205,16 +205,16 @@ class Ring(IRing):
         for node in self._nodes:
             if point == node.value:
                 return True
-            
+
         return False
-    
+
     def __eq__(self, other: IRing) -> bool:
         ...
 
     def __getitem__(self, index: int) -> IPoint:
         """
         This gets the point (node) at the given index.
-        
+
         Args:
             index:
                 ...
@@ -246,7 +246,7 @@ class Ring(IRing):
             length:
                 ...
         """
-        
+
         return len(self._nodes)
 
     def __str__(self) -> str:
@@ -290,14 +290,13 @@ class Ring(IRing):
 
         if len(self._nodes) <= 2:
             return False
-        
+
         for node in self._nodes:
-            if (
-                not node.has_connection(NeighborOption.LEFT) or
-                not node.has_connection(NeighborOption.RIGHT)
+            if not node.has_connection(NeighborOption.LEFT) or not node.has_connection(
+                NeighborOption.RIGHT
             ):
                 return False
-            
+
         return True
 
     @property

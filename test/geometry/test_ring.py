@@ -1,7 +1,7 @@
 import pytest
 
-from mesher.geometry.ring import Node, Orientation, Ring
 from mesher.geometry.point import Point
+from mesher.geometry.ring import Node, Orientation, Ring
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def sample_points() -> dict[str, list[Point]]:
             Point(x=0, y=0, ID=0),
             Point(x=1, y=0, ID=1),
             Point(x=1, y=1, ID=2),
-        ]
+        ],
     }
 
 
@@ -131,7 +131,7 @@ def test_ring_str(sample_rings, sample_points):
         ("closed,CW,concave", -2.0),
         ("open,len=2", None),
         ("open,len>2", None),
-    ]
+    ],
 )
 def test_ring_area(sample_rings, scenario, result):
     """This tests that the area of a ring is properly computed."""
@@ -151,7 +151,7 @@ def test_ring_area(sample_rings, scenario, result):
         ("closed,CW,concave", True),
         ("open,len=2", False),
         ("open,len>2", False),
-    ]
+    ],
 )
 def test_ring_closed(sample_rings, scenario, flag):
     """This tests that the ring is closed or not."""
@@ -171,11 +171,11 @@ def test_ring_closed(sample_rings, scenario, flag):
         ("closed,CW,concave", False),
         ("open,len=2", None),
         ("open,len>2", None),
-    ]
+    ],
 )
 def test_ring_is_convex(sample_rings, scenario, result):
     """This tests that the concavity of a closed ring is computed correctly."""
-    
+
     if "closed" in scenario:
         if result:
             assert sample_rings[scenario].is_convex
@@ -194,7 +194,7 @@ def test_ring_is_convex(sample_rings, scenario, result):
         ("closed,CW,concave", False),
         ("open,len=2", None),
         ("open,len>2", None),
-    ]
+    ],
 )
 def test_ring_orientation(sample_rings, scenario, result):
     """This tests that the orientation of a closed ring is computed correctly."""
