@@ -42,7 +42,7 @@ def sample_points() -> dict[str, list[Point]]:
         "open,len>2": [
             Point(x=0, y=0, ID=0),
             Point(x=1, y=0, ID=1),
-            Point(x=1, y=1, ID=2),
+            Point(x=0, y=1, ID=2),
         ],
     }
 
@@ -225,3 +225,23 @@ def test_ring_add_point(sample_rings, sample_points):
 
             assert len(ring._nodes) == len(sample_points[scenario]) + 1
             assert ring._nodes[-1].value == Point(x=-1, y=-1, ID=10)
+
+
+@pytest.mark.parametrize(
+    "scenario,point,loc",
+    [
+        ("closed,CCW,convex", Point(x=0, y=1, ID=-1), None),
+        ("closed,CW,convex", Point(x=0, y=1, ID=-1), None),
+        ("closed,CCW,concave", Point(x=0, y=1, ID=-1), 2),
+        ("closed,CW,concave", Point(x=0, y=1, ID=-1), 2),
+        ("open,len=2", Point(x=0, y=1, ID=-1), 1),
+        ("open,len>2", Point(x=0, y=1, ID=-1), 2),
+    ]
+)
+def test_ring_find_point(sample_rings, scenario, point, loc):
+    """This tests finding a point in a ring."""
+
+    if loc is not None:
+        assert sample_rings[scenario].find_point(point) == loc
+    else:
+        assert sample_rings[scenario].find_point(point) is None
