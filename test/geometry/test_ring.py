@@ -127,10 +127,6 @@ def test_ring_str(sample_rings, sample_points):
             ret += f"\t\t{str(node)},\n"
 
         ret += "\t]\n)"
-
-        print(ring)
-        print(ret)
-
         assert str(ring) == ret
 
 
@@ -321,6 +317,45 @@ def test_ring_insert_point_closed(sample_rings, sample_points):
             assert ring._nodes[1].left.value.ID == sample_points[scenario][0].ID
             assert ring._nodes[1].right.value.ID == sample_points[scenario][1].ID
             assert ring._nodes[2].left.value.ID == 10
+
+
+def test_ring_remove_collinear():
+    """This tests that collinear points can be removed."""
+
+    points: list[Point] = [
+        Point(x=0, y=0, ID=0),  # 0: ok
+        Point(x=1, y=0, ID=1),  # 1: del
+        Point(x=2, y=0, ID=2),  # 2: ok
+        Point(x=2, y=1, ID=3),  # 3: del
+        Point(x=2, y=2, ID=4),  # 4: ok
+        Point(x=1, y=2, ID=5),  # 5: del
+        Point(x=0, y=2, ID=6),  # 6: ok
+        Point(x=0, y=1, ID=7),  # 7: del
+    ]
+
+    ring: Ring = Ring()
+    for point in points:
+        ring.add_point(point)
+
+    ring.close()
+
+    assert len(ring._nodes) == 8
+    for n, node in enumerate(ring._nodes):
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(ring._nodes)
+
+        assert node.left.value.ID == points[n_before].ID
+        assert node.right.value.ID == points[n_after].ID
+
+    ring.remove_collinear()
+    assert len(ring._nodes) == 4
+    pnts = [points[i] for i in [0, 2, 4, 6]]
+    for n, node in enumerate(ring._nodes):
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(ring._nodes)
+
+        assert node.left.value.ID == pnts[n_before].ID
+        assert node.right.value.ID == pnts[n_after].ID
 
 
 @pytest.mark.parametrize(
