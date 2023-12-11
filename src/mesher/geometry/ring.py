@@ -74,6 +74,52 @@ class Node:
             Point
         """
 
+    def __str__(self) -> str:
+        """
+        This prints the node to the screen.
+
+        Returns:
+            ret:
+                ...
+
+        Example:
+            ```py
+            >>> node = Node(Point(x=0, y=0, ID=0))
+            >>> print(node)
+            Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=None,
+                right.ID=None,
+            )
+            >>> node.left = Node(Point(x=1, y=0, ID=-1))
+            >>> print(node)
+            Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=-1,
+                right.ID=None
+            )
+            >>> node.right = Node(Point(x=-1, y=0, ID=1))
+            >>> print(node)
+            Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=-1,
+                right.ID=1,
+            )
+            ```
+        """
+
+        def output_string(conn: int | None) -> str:
+            """This outputs either the connection number as a string or `'None'` as a
+            string to be printed."""
+
+            return str(conn.value.ID) if conn is not None else "None"
+
+        ret: str = "Node(\n"
+        ret += f"\tvalue={str(self._value)},\n"
+        ret += f"\tleft.ID={output_string(self._left)},\n"
+        ret += f"\tright.ID={output_string(self._right)},\n"
+        return ret + ")"
+
     @property
     def left(self) -> Node | None:
         """
@@ -386,19 +432,31 @@ class Ring(IRing):
             >>> ring.add_point(Point(x=1, y=1, ID=2))
             >>> print(ring)
             Ring(
-                points=[
-                    Point(x=0, y=0, ID=0),
-                    Point(x=1, y=0, ID=1),
-                    Point(x=1, y=1, ID=2),
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=None,
+                right.ID=None,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=None,
+                right.ID=None,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=None,
+                right.ID=None,
+                    ),
                 ]
             )
             ```
         """
 
         ret: str = "Ring(\n"
-        ret += "\tpoints=[\n"
+        ret += "\tnodes=[\n"
         for node in self._nodes:
-            ret += f"\t\t{str(node.value)},\n"
+            ret += f"\t\t{str(node)},\n"
 
         return ret + "\t]\n)"
 
@@ -411,7 +469,15 @@ class Ring(IRing):
             float | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.close()
+            >>> ring.area
+            0.5
+            ```
         """
 
         if not self.closed:
@@ -438,7 +504,17 @@ class Ring(IRing):
             bool:
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.closed
+            False
+            >>> ring.close()
+            >>> ring.closed
+            True
+            ```
         """
 
         if len(self._nodes) <= 2:
@@ -461,7 +537,16 @@ class Ring(IRing):
             bool | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=2, y=2, ID=1))
+            >>> ring.add_point(Point(x=0, y=1, ID=2))
+            >>> ring.add_point(Pointx=-2, y=2, ID=3))
+            >>> ring.close()
+            >>> ring.is_convex
+            True
+            ```
         """
 
         if not self.closed:
@@ -491,7 +576,14 @@ class Ring(IRing):
             Orientation | None
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.orientation
+            <Orientation.CCW: 0>
+            ```
         """
 
         if not self.closed:
@@ -533,7 +625,29 @@ class Ring(IRing):
         self._nodes.append(Node(point))
 
     def close(self) -> None:
-        ...
+        """
+        This closes the ring.
+
+        Example:
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.closed
+            False
+            >>> ring.close()
+            >>> ring.closed
+            True
+            ```
+        """
+
+        if not self.closed or len(self) > 2:
+            for n, node in enumerate(self._nodes):
+                n_before: int = n - 1
+                n_after: int = (n + 1) % len(self)
+                node.left = self._nodes[n_before]
+                node.right = self._nodes[n_after]
 
     def find_point(self, point: IPoint) -> int | None:
         """
@@ -579,7 +693,59 @@ class Ring(IRing):
                 ...
 
         Example:
-            TODO: fill in this example
+            ```py
+            >>> ring = Ring()
+            >>> ring.add_point(Point(x=0, y=0, ID=0))
+            >>> ring.add_point(Point(x=1, y=0, ID=1))
+            >>> ring.add_point(Point(x=1, y=1, ID=2))
+            >>> ring.close()
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=2,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=1,
+                right.ID=0,
+                    ),
+                ]
+            )
+            >>> ring.insert_point(Point(x=0.5, y=2, ID=3), 3)
+            >>> print(ring)
+            Ring(
+                nodes=[
+                    Node(
+                value=Point(x=0, y=0, ID=0),
+                left.ID=3,
+                right.ID=1,
+                    ),
+                    Node(
+                value=Point(x=1, y=0, ID=1),
+                left.ID=0,
+                right.ID=2,
+                    ),
+                    Node(
+                value=Point(x=1, y=1, ID=2),
+                left.ID=1,
+                right.ID=3,
+                    ),
+                    Node(
+                value=Point(x=0.5, y=2, ID=3),
+                left.ID=2,
+                right.ID=0,
+                    )
+                ]
+            )
+            ```
         """
 
         closed: bool = self.closed
