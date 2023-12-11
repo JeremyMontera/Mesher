@@ -297,3 +297,37 @@ def test_ring_insert_point_closed(sample_rings, sample_points):
             assert ring._nodes[1].left.value.ID == sample_points[scenario][0].ID
             assert ring._nodes[1].right.value.ID == sample_points[scenario][1].ID
             assert ring._nodes[2].left.value.ID == 10
+
+
+@pytest.mark.parametrize(
+    "scenario,orient1,orient2",
+    [
+        ("closed,CCW,convex", Orientation.CCW, Orientation.CW),
+        ("closed,CW,convex", Orientation.CW, Orientation.CCW),
+        ("closed,CCW,concave", Orientation.CCW, Orientation.CW),
+        ("closed,CW,concave", Orientation.CW, Orientation.CCW),
+    ]
+)
+def test_ring_reverse_orientation(
+    sample_rings, sample_points, scenario, orient1, orient2
+):
+    """This tests the ability to reverse a ring's orientation."""
+
+    ring: Ring = sample_rings[scenario]
+    assert ring.orientation == orient1
+    for n, node in enumerate(ring._nodes):
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(ring._nodes)
+
+        assert node.left.value.ID == sample_points[scenario][n_before].ID
+        assert node.right.value.ID == sample_points[scenario][n_after].ID
+
+    ring.reverse_orientation()
+    sample_points[scenario].reverse()
+    assert ring.orientation == orient2
+    for n, node in enumerate(ring._nodes):
+        n_before: int = n - 1
+        n_after: int = (n + 1) % len(ring._nodes)
+
+        assert node.left.value.ID == sample_points[scenario][n_before].ID
+        assert node.right.value.ID == sample_points[scenario][n_after].ID
