@@ -28,3 +28,9 @@ mesh 5 - write close method                         x
     (2) allow users to print nodes to screen        x
     (2) write unit tests                            x
     (3) update/add docs...                          x
+
+mesh 6 - reverse ring                               x
+    (1) decide when reverse should be called        x
+    (2) write implementation                        x
+    (3) write unit tests                            x
+    (4) docs...                                     x

@@ -172,6 +172,12 @@ class IRing(metaclass=abc.ABCMeta):
         ...
 
     @abc.abstractmethod
+    def reverse_orientation(self) -> None:
+        """This reversed the orientation of a closed ring."""
+
+        ...
+
+    @abc.abstractmethod
     def split_ring(self) -> list[IRing]:
         """This splits a ring that has self-intersections into multiple,
         non-self-intersecting rings."""
