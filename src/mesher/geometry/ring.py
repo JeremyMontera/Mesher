@@ -374,22 +374,24 @@ class Ring(IRing):
 
         if len(self) != len(other):
             return False
-        
+
         if self[0] not in other:
             return False
-        
+
         ptr0: int = other.find_point(self[0]) + 1
         ptr1: int = 1
         while True:
-            if self[ptr0] != other[ptr1]:
+            node1: Node = self._nodes[ptr0]
+            node2: Node = other._nodes[ptr1]
+            if node1.value != node2.value:
                 return False
-            
+
             if (
-                self._nodes[ptr0].left.value != other._nodes[ptr1].left.value or
-                self._nodes[ptr0].right.value != other._nodes[ptr1].right.value
+                node1.left.value != node2.left.value
+                or node1.right.value != node2.right.value  # noqa: W503
             ):
                 return False
-            
+
             ptr0: int = (ptr0 + 1) % len(self)
             ptr1: int = (ptr1 + 1) % len(other)
             if ptr1 == 0:
