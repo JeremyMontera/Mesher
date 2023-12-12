@@ -86,6 +86,112 @@ def test_ring_contains(sample_rings):
     assert point2 not in sample_rings["closed,CCW,convex"]
 
 
+def test_ring_equality_not_equal_length():
+    """This tests ring equal when they do not have equal length."""
+
+    ring1: Ring = Ring()
+    ring2: Ring = Ring()
+
+    ring1.add_point(Point(x=0, y=0, ID=0))
+    ring1.add_point(Point(x=1, y=0, ID=1))
+    ring1.add_point(Point(x=1, y=1, ID=2))
+
+    ring2.add_point(Point(x=0, y=0, ID=0))
+    ring2.add_point(Point(x=1, y=0, ID=1))
+    ring2.add_point(Point(x=1, y=1, ID=2))
+    ring2.add_point(Point(x=0, y=1, ID=3))
+
+    assert ring1 != ring2
+
+
+def test_ring_equality_missing_first_point():
+    """This tests ring equal when the first point cannot be found."""
+
+    ring1: Ring = Ring()
+    ring2: Ring = Ring()
+
+    ring1.add_point(Point(x=1, y=-1, ID=0))
+    ring1.add_point(Point(x=2, y=-1, ID=1))
+    ring1.add_point(Point(x=2, y=0, ID=2))
+    ring1.add_point(Point(x=1, y=0, ID=3))
+
+    ring2.add_point(Point(x=0, y=0, ID=0))
+    ring2.add_point(Point(x=1, y=0, ID=1))
+    ring2.add_point(Point(x=1, y=1, ID=2))
+    ring2.add_point(Point(x=0, y=1, ID=3))
+
+    assert ring1 != ring2
+
+
+def test_ring_equality_points_not_equal():
+    """This tests ring equal when the remainder of the points are not equal."""
+
+    ring1: Ring = Ring()
+    ring2: Ring = Ring()
+
+    ring1.add_point(Point(x=0, y=0, ID=0))
+    ring1.add_point(Point(x=2, y=0, ID=1))
+    ring1.add_point(Point(x=2, y=1, ID=2))
+    ring1.add_point(Point(x=0, y=1, ID=3))
+
+    ring2.add_point(Point(x=0, y=0, ID=0))
+    ring2.add_point(Point(x=1, y=0, ID=1))
+    ring2.add_point(Point(x=1, y=1, ID=2))
+    ring2.add_point(Point(x=0, y=1, ID=3))
+
+    ring1 != ring2
+
+
+def test_ring_equality_edges_not_equal():
+    """This tests ring equal when the edges don't line up."""
+
+    ring1: Ring = Ring()
+    ring2: Ring = Ring()
+
+    ring1.add_point(Point(x=0, y=0, ID=0))
+    ring1.add_point(Point(x=1, y=0, ID=1))
+    ring1.add_point(Point(x=1, y=1, ID=2))
+    ring1.add_point(Point(x=0, y=1, ID=3))
+
+    ring1._nodes[0].left = ring1._nodes[2]
+    ring1._nodes[0].right = ring1._nodes[1]
+    ring1._nodes[1].left = ring1._nodes[0]
+    ring1._nodes[1].right = ring1._nodes[3]
+    ring1._nodes[2].left = ring1._nodes[3]
+    ring1._nodes[2].right = ring1._nodes[0]
+    ring1._nodes[3].left = ring1._nodes[1]
+    ring1._nodes[3].right = ring1._nodes[2]
+
+    ring2.add_point(Point(x=0, y=0, ID=0))
+    ring2.add_point(Point(x=1, y=0, ID=1))
+    ring2.add_point(Point(x=1, y=1, ID=2))
+    ring2.add_point(Point(x=0, y=1, ID=3))
+    ring2.close()
+
+    assert ring1 != ring2
+
+
+def test_ring_equality():
+    """This tests ring equal"""
+
+    ring1: Ring = Ring()
+    ring2: Ring = Ring()
+
+    ring1.add_point(Point(x=0, y=0, ID=0))
+    ring1.add_point(Point(x=1, y=0, ID=1))
+    ring1.add_point(Point(x=1, y=1, ID=2))
+    ring1.add_point(Point(x=0, y=1, ID=3))
+    ring1.close()
+
+    ring2.add_point(Point(x=0, y=0, ID=0))
+    ring2.add_point(Point(x=1, y=0, ID=1))
+    ring2.add_point(Point(x=1, y=1, ID=2))
+    ring2.add_point(Point(x=0, y=1, ID=3))
+    ring2.close()
+
+    assert ring1 == ring2
+
+
 def test_ring_getitem(sample_rings, sample_points):
     """This tests ring getitem operator."""
 

@@ -342,7 +342,62 @@ class Ring(IRing):
         return False
 
     def __eq__(self, other: IRing) -> bool:
-        ...
+        """
+        This checks if two rings are equal within tolerance. This will first check that
+        the number of points are equal, and that all the points line up by checking
+        that (a) the points are equal, and (b) the ordering of the points is equal.
+
+        Args:
+            other:
+                ...
+
+        Returns:
+            flag:
+                ...
+
+        Example:
+            ```py
+            >>> ring1 = Ring()
+            >>> ring1.add_point(Point(x=0, y=0, ID=0))
+            >>> ring1.add_point(Point(x=1, y=1, ID=1))
+            >>> ring1.add_point(Point(x=0, y=2, ID=2))
+            >>> ring1.close()
+            >>> ring2 = Ring()
+            >>> ring2.add_point(Point(x=0, y=0, ID=3))
+            >>> ring2.add_point(Point(x=1, y=1, ID=4))
+            >>> ring2.add_point(Point(x=0, y=2, ID=5))
+            >>> ring2.close()
+            >>> ring1 == ring2
+            True
+            ```
+        """
+
+        if len(self) != len(other):
+            return False
+
+        if self[0] not in other:
+            return False
+
+        ptr0: int = other.find_point(self[0]) + 1
+        ptr1: int = 1
+        while True:
+            node1: Node = self._nodes[ptr0]
+            node2: Node = other._nodes[ptr1]
+            if node1.value != node2.value:
+                return False
+
+            if (
+                node1.left.value != node2.left.value
+                or node1.right.value != node2.right.value  # noqa: W503
+            ):
+                return False
+
+            ptr0: int = (ptr0 + 1) % len(self)
+            ptr1: int = (ptr1 + 1) % len(other)
+            if ptr1 == 0:
+                break
+
+        return True
 
     def __getitem__(self, index: int) -> IPoint:
         """
