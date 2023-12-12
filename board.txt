@@ -41,3 +41,8 @@ mesh 7 - remove collinear points                    x
     (3) write implementation to delete collinears   x
     (4) write unit tests                            x
     (5) docs...                                     x
+
+mesh 8 - ring equality                              x
+    (1) write == overload for rings                 x
+    (2) update/write unit tests                     x
+    (3) docs...                                     x
