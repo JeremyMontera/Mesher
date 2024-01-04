@@ -1,7 +1,8 @@
 import os
 import pathlib
 
-from .abc import IRing, IWriter
+from .abc import IWriter
+from mesher.geometry.abc import IRing
 
 class Writer(IWriter):
     
