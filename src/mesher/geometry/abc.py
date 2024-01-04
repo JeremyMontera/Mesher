@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import abc
+import pathlib
 from typing import Iterable, Literal
 
 
@@ -57,6 +58,20 @@ class IPoint(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def y(self) -> float:
         """This gets the y-position of the point."""
+
+        ...
+
+
+class IReader(metaclass=abc.ABCMeta):
+
+    @staticmethod
+    @abc.abstractmethod
+    def read(filename: str | pathlib.Path) -> list[IRing]:
+        """
+        Read point data from file and load it into figures.
+
+        TODO: update this when polygons/cells are implemented.
+        """
 
         ...
 
@@ -188,4 +203,18 @@ class IRing(metaclass=abc.ABCMeta):
         """This splits a ring that has self-intersections into multiple,
         non-self-intersecting rings."""
 
+        ...
+
+
+class IWriter(metaclass=abc.ABCMeta):
+
+    @staticmethod
+    @abc.abstractmethod
+    def write(filename: str | pathlib.Path, data: dict[str, IRing]) -> None:
+        """
+        Write point data from figures to file.
+
+        TODO: update this when polygons/cells are implemented.
+        """
+        
         ...
