@@ -46,3 +46,9 @@ mesh 8 - ring equality                              x
     (1) write == overload for rings                 x
     (2) update/write unit tests                     x
     (3) docs...                                     x
+
+mesh 8.5 - file reader/writer                       x
+    (1) wrote interface for reader/writer           x
+    (2) wrote reader/writer classes                 x
+    (3) unit tests...                               x
+    (4) docs...                                     x
