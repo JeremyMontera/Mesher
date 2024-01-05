@@ -4,6 +4,8 @@ import pathlib
 from .abc import IWriter
 from mesher.geometry.abc import IRing
 
+CWD: pathlib.Path = pathlib.Path(os.getcwd())
+
 class Writer(IWriter):
     
     @staticmethod
@@ -20,10 +22,14 @@ class Writer(IWriter):
                 Dictionary of ring names and rings.
         """
 
-        if os.path.exists(filename):
-            raise OSError(f"{filename} already exists!")
+        if isinstance(filename, str):
+            filename: pathlib.Path = pathlib.Path(filename)
 
-        with open(filename, "w") as f:
+        filepath: pathlib.Path = CWD / filename
+        if os.path.exists(filepath):
+            raise OSError(f"{filepath} already exists!")
+
+        with open(filepath, "w") as f:
             for name, ring in data.items():
                 f.write(f"{name}\n")
                 for point in ring:
