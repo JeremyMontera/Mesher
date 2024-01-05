@@ -20,7 +20,8 @@ class TestWriter:
         ring1: Ring = Ring()
         ring1.add_point(Point(x=0, y=0, ID=3))
         ring1.add_point(Point(x=1, y=1, ID=4))
-        ring1.add_point(Point(x=0, y=1, ID=5))
+        ring1.add_point(Point(x=0, y=2, ID=5))
+        ring1.add_point(Point(x=-1, y=1, ID=6))
 
         self.data: dict[str, Ring] = {
             "foo": ring0,
@@ -33,7 +34,8 @@ class TestWriter:
         with pytest.raises(OSError) as exc:
             Writer.write(self.filename, {})
 
-        assert exc.value.args[0] == "test.txt already exists!"
+        filepath: pathlib.Path = pathlib.Path(os.getcwd()) / self.filename
+        assert exc.value.args[0] == f"{filepath} already exists!"
 
     def test_writer_write(self):
         assert not os.path.exists(self.filename)
