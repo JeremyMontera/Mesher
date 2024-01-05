@@ -9,6 +9,13 @@ CWD: pathlib.Path = pathlib.Path(os.getcwd())
 
 class Reader(IReader):
 
+    """
+    This class implements a basic reader class. It will read geometric data from a
+    geometry file (right now, a text file). A geometry file currently consists of a
+    ring name and the points in the order they should be loaded in. This class should
+    not be directly created by the user.
+    """
+
     @staticmethod
     def read(filename: str | pathlib.Path) -> list[Ring]:
         """

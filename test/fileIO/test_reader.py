@@ -13,6 +13,8 @@ class TestReader:
 
     @mock.patch("os.path.exists")
     def test_reader_read_error_file_not_found(self, mock_exists):
+        """Test that the reader raises an error is the file doesn't exist."""
+
         mock_exists.return_value = False
         with pytest.raises(OSError) as exc:
             Reader.read(self.filename)
@@ -21,6 +23,8 @@ class TestReader:
         assert exc.value.args[0] == f"{filepath} doesn't exist!"
 
     def test_reader_read(self):
+        """Test reading sample data from a geometry file."""
+        
         data: dict[str, Ring] = Reader.read(self.filename)
         assert len(data) == 2
         assert "foo" in data.keys()

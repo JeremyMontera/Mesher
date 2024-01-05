@@ -5,6 +5,8 @@ from mesher.geometry.abc import IRing
 
 class IReader(metaclass=abc.ABCMeta):
 
+    """This is an interface for the [`Reader`][mesher.fileIO.reader.Reader] class."""
+
     @staticmethod
     @abc.abstractmethod
     def read(filename: str | pathlib.Path) -> list[IRing]:
@@ -18,6 +20,8 @@ class IReader(metaclass=abc.ABCMeta):
         
 
 class IWriter(metaclass=abc.ABCMeta):
+
+    """This is an interface for the [`Writer`][mesher.fileIO.writer.Writer] class."""
 
     @staticmethod
     @abc.abstractmethod

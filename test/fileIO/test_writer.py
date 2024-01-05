@@ -12,6 +12,8 @@ class TestWriter:
     filename: pathlib.Path = pathlib.Path("test.txt")
 
     def setup_point_info(self):
+        """Setup some simple geometry data."""
+
         ring0: Ring = Ring()
         ring0.add_point(Point(x=0, y=0, ID=0))
         ring0.add_point(Point(x=1, y=0, ID=1))
@@ -30,6 +32,8 @@ class TestWriter:
 
     @mock.patch('os.path.exists')
     def test_writer_error_file_exists(self, mock_exists):
+        """Test that the writer raises an error if the file already exists."""
+
         mock_exists.return_value = True
         with pytest.raises(OSError) as exc:
             Writer.write(self.filename, {})
@@ -38,6 +42,8 @@ class TestWriter:
         assert exc.value.args[0] == f"{filepath} already exists!"
 
     def test_writer_write(self):
+        """Test that the writer writes the data to the geometry file."""
+        
         assert not os.path.exists(self.filename)
         self.setup_point_info()
         Writer.write(self.filename, self.data)

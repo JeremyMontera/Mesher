@@ -7,6 +7,13 @@ from mesher.geometry.abc import IRing
 CWD: pathlib.Path = pathlib.Path(os.getcwd())
 
 class Writer(IWriter):
+
+    """
+    This class implements a basic writer class. It will write geometric data to a
+    geometry file (right now, a text file). A geometry file currently consists of a
+    ring name and the points in the order they appear in the ring this class is writing
+    to file. This class should not be directly created by the user.
+    """
     
     @staticmethod
     def write(filename: str | pathlib.Path, data: dict[str, IRing]) -> None:
