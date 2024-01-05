@@ -1,14 +1,15 @@
 import os
 import pathlib
-import pytest
 from unittest import mock
+
+import pytest
 
 from mesher.fileIO.reader import Reader
 from mesher.geometry.point import Point
 from mesher.geometry.ring import Ring
 
-class TestReader:
 
+class TestReader:
     filename: pathlib.Path = pathlib.Path("test/fileIO/test_ring_data.txt")
 
     @mock.patch("os.path.exists")
@@ -24,7 +25,7 @@ class TestReader:
 
     def test_reader_read(self):
         """Test reading sample data from a geometry file."""
-        
+
         data: dict[str, Ring] = Reader.read(self.filename)
         assert len(data) == 2
         assert "foo" in data.keys()

@@ -3,6 +3,7 @@ import pathlib
 
 from mesher.geometry.abc import IRing
 
+
 class IReader(metaclass=abc.ABCMeta):
 
     """This is an interface for the [`Reader`][mesher.fileIO.reader.Reader] class."""
@@ -17,7 +18,7 @@ class IReader(metaclass=abc.ABCMeta):
         """
 
         ...
-        
+
 
 class IWriter(metaclass=abc.ABCMeta):
 
@@ -31,5 +32,5 @@ class IWriter(metaclass=abc.ABCMeta):
 
         TODO: update this when polygons/cells are implemented.
         """
-        
+
         ...

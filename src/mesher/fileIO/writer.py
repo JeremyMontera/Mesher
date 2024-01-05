@@ -1,10 +1,12 @@
 import os
 import pathlib
 
-from .abc import IWriter
 from mesher.geometry.abc import IRing
 
+from .abc import IWriter
+
 CWD: pathlib.Path = pathlib.Path(os.getcwd())
+
 
 class Writer(IWriter):
 
@@ -14,7 +16,7 @@ class Writer(IWriter):
     ring name and the points in the order they appear in the ring this class is writing
     to file. This class should not be directly created by the user.
     """
-    
+
     @staticmethod
     def write(filename: str | pathlib.Path, data: dict[str, IRing]) -> None:
         """

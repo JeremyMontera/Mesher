@@ -1,11 +1,13 @@
 import os
 import pathlib
 
-from .abc import IReader
 from mesher.geometry.point import Point
 from mesher.geometry.ring import Ring
 
+from .abc import IReader
+
 CWD: pathlib.Path = pathlib.Path(os.getcwd())
+
 
 class Reader(IReader):
 
@@ -40,7 +42,7 @@ class Reader(IReader):
         filepath: pathlib.Path = CWD / filename
         if not os.path.exists(filepath):
             raise OSError(f"{filepath} doesn't exist!")
-        
+
         with open(filepath, "r") as f:
             data: dict[str, Ring] = {}
             current_name: str | None = None

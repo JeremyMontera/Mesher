@@ -1,14 +1,15 @@
 import os
 import pathlib
-import pytest
 from unittest import mock
+
+import pytest
 
 from mesher.fileIO.writer import Writer
 from mesher.geometry.point import Point
 from mesher.geometry.ring import Ring
 
-class TestWriter:
 
+class TestWriter:
     filename: pathlib.Path = pathlib.Path("test.txt")
 
     def setup_point_info(self):
@@ -30,7 +31,7 @@ class TestWriter:
             "bar": ring1,
         }
 
-    @mock.patch('os.path.exists')
+    @mock.patch("os.path.exists")
     def test_writer_error_file_exists(self, mock_exists):
         """Test that the writer raises an error if the file already exists."""
 
@@ -43,7 +44,7 @@ class TestWriter:
 
     def test_writer_write(self):
         """Test that the writer writes the data to the geometry file."""
-        
+
         assert not os.path.exists(self.filename)
         self.setup_point_info()
         Writer.write(self.filename, self.data)
