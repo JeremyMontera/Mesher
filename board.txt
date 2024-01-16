@@ -53,6 +53,6 @@ mesh 8.5 - file reader/writer                       x
     (3) unit tests...                               x
     (4) docs...                                     x
 
-mesh 9 - write system tests
-    (1) separate unittests and system tests
-    (2) write ring duplicates removal test
+mesh 9 - write system tests                         x
+    (1) separate unittests and system tests         x
+    (2) write ring duplicates removal test          x
