@@ -8,6 +8,7 @@ input_filename: str = "test/system-tests/data/rings_with_duplicates.txt"
 result_filename: str = "test/system-tests/RingDuplicatesRemoval/results.txt"
 output_filename: str = "test/system-tests/RingDuplicatesRemoval/output.txt"
 
+
 def compare_files() -> bool:
     with open(result_filename, "r") as f_results:
         lines_results: list[str] = f_results.readlines()
@@ -17,17 +18,18 @@ def compare_files() -> bool:
 
     if len(lines_output) != len(lines_results):
         return False
-    
-    for l in range(len(lines_output)):
-        if lines_output[l] != lines_results[l]:
+
+    for lineno in range(len(lines_output)):
+        if lines_output[lineno] != lines_results[lineno]:
             return False
-        
+
     return True
+
 
 def test_ring_removal():
     """
     This will test that any duplicate rings are deleted.
-    
+
     TODO: update this later to be more system-test like (maybe execute from YAML?)
     """
 
@@ -47,7 +49,7 @@ def test_ring_removal():
         if is_duplicate[r1]:
             continue
 
-        for r2 in range(r1+1, len(rings)):
+        for r2 in range(r1 + 1, len(rings)):
             if is_duplicate[r2]:
                 continue
 
