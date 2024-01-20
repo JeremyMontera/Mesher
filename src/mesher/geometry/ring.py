@@ -380,8 +380,9 @@ class Ring(IRing):
                 return False
 
             if (
-                node1.left.value != node2.left.value or  # type: ignore[union-attr] # noqa: W504, E501
-                node1.right.value != node2.right.value   # type: ignore[union-attr]
+                node1.left.value != node2.left.value
+                or node1.right.value  # type: ignore[union-attr] # noqa: W503, W504, E501
+                != node2.right.value  # type: ignore[union-attr] # noqa: W503, W504, E501
             ):
                 return False
 
