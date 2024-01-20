@@ -10,7 +10,7 @@ from mesher.geometry.ring import Ring
 
 
 class TestReader:
-    filename: pathlib.Path = pathlib.Path("test/fileIO/test_ring_data.txt")
+    filename: pathlib.Path = pathlib.Path("test/unit-tests/fileIO/test_ring_data.txt")
 
     @mock.patch("os.path.exists")
     def test_reader_read_error_file_not_found(self, mock_exists):

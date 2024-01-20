@@ -32,7 +32,7 @@ class Writer(IWriter):
         """
 
         if isinstance(filename, str):
-            filename: pathlib.Path = pathlib.Path(filename)
+            filename = pathlib.Path(filename)
 
         filepath: pathlib.Path = CWD / filename
         if os.path.exists(filepath):

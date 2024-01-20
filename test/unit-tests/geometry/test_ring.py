@@ -1,7 +1,7 @@
 import pytest
 
 from mesher.geometry.point import Point
-from mesher.geometry.ring import Node, Orientation, Ring
+from mesher.geometry.ring import Node, Ring
 
 
 @pytest.fixture
@@ -314,9 +314,9 @@ def test_ring_orientation(sample_rings, scenario):
     """This tests that the orientation of a closed ring is computed correctly."""
 
     if "closed" in scenario and "CCW" in scenario:
-        assert sample_rings[scenario].orientation == Orientation.CCW
+        assert sample_rings[scenario].orientation == 'CCW'
     elif "closed" in scenario and "CW" in scenario:
-        assert sample_rings[scenario].orientation == Orientation.CW
+        assert sample_rings[scenario].orientation == 'CW'
     elif "open" in scenario:
         assert sample_rings[scenario].orientation is None
 
@@ -467,10 +467,10 @@ def test_ring_remove_collinear():
 @pytest.mark.parametrize(
     "scenario,orient1,orient2",
     [
-        ("closed,CCW,convex", Orientation.CCW, Orientation.CW),
-        ("closed,CW,convex", Orientation.CW, Orientation.CCW),
-        ("closed,CCW,concave", Orientation.CCW, Orientation.CW),
-        ("closed,CW,concave", Orientation.CW, Orientation.CCW),
+        ("closed,CCW,convex", 'CCW', 'CW'),
+        ("closed,CW,convex", 'CW', 'CCW'),
+        ("closed,CCW,concave", 'CCW', 'CW'),
+        ("closed,CW,concave", 'CW', 'CCW'),
     ],
 )
 def test_ring_reverse_orientation(

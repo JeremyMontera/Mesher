@@ -90,7 +90,7 @@ class Point(IPoint):
 
         return Point(x=self._x + other.x, y=self._y + other.y, ID=self._ID + other.ID)
 
-    def __eq__(self, other: IPoint) -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         This checks to see if two points have the same x- and y-positions (within a
         certain tolerance) regardless of their ID.
@@ -117,6 +117,9 @@ class Point(IPoint):
             ```
         """
 
+        if not isinstance(other, IPoint):
+            return NotImplemented
+        
         return abs(self._x - other.x) < TOL and abs(self._y - other.y) < TOL
 
     def __str__(self) -> str:
@@ -218,7 +221,7 @@ class Point(IPoint):
         return self._y
 
 
-def are_collinear(point1: Point, point2: Point, point3: Point) -> bool:
+def are_collinear(point1: IPoint, point2: IPoint, point3: IPoint) -> bool:
     """
     This checks to see if three points are collinear. It will do this by computing
     their cross product. If their cross product is zero, then they are collinear. This
@@ -237,8 +240,8 @@ def are_collinear(point1: Point, point2: Point, point3: Point) -> bool:
             ...
     """
 
-    delta1: Point = point1 - point2
-    delta2: Point = point1 - point3
+    delta1: IPoint = point1 - point2
+    delta2: IPoint = point1 - point3
     return abs(cross_product(delta1, delta2)) < TOL
 
 

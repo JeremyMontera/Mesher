@@ -19,7 +19,7 @@ class Reader(IReader):
     """
 
     @staticmethod
-    def read(filename: str | pathlib.Path) -> list[Ring]:
+    def read(filename: str | pathlib.Path) -> dict[str | None, Ring]:
         """
         Read point data from file and load it into figures.
 
@@ -37,14 +37,14 @@ class Reader(IReader):
         """
 
         if isinstance(filename, str):
-            filename: pathlib.Path = pathlib.Path(filename)
+            filename = pathlib.Path(filename)
 
         filepath: pathlib.Path = CWD / filename
         if not os.path.exists(filepath):
             raise OSError(f"{filepath} doesn't exist!")
 
         with open(filepath, "r") as f:
-            data: dict[str, Ring] = {}
+            data: dict[str | None, Ring] = {}
             current_name: str | None = None
             for line in f.readlines():
                 content: list[str] = line.rstrip().split(",")

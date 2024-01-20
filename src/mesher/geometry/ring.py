@@ -17,16 +17,6 @@ class NeighborOption(enum.Enum):
     """The right neighbor."""
 
 
-class Orientation(enum.Enum):
-    """This encodes the orientation of the ring."""
-
-    CCW: int = 0
-    """Counter clockwise"""
-
-    CW: int = 1
-    "Clockwise"
-
-
 class Node:
 
     """
@@ -108,7 +98,7 @@ class Node:
             ```
         """
 
-        def output_string(conn: int | None) -> str:
+        def output_string(conn: Node | None) -> str:
             """This outputs either the connection number as a string or `'None'` as a
             string to be printed."""
 
@@ -341,7 +331,7 @@ class Ring(IRing):
 
         return False
 
-    def __eq__(self, other: IRing) -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         This checks if two rings are equal within tolerance. This will first check that
         the number of points are equal, and that all the points line up by checking
@@ -372,28 +362,31 @@ class Ring(IRing):
             ```
         """
 
+        if not isinstance(other, IRing):
+            return NotImplemented
+
         if len(self) != len(other):
             return False
 
         if self[0] not in other:
             return False
-
-        ptr0: int = other.find_point(self[0]) + 1
+        
+        ptr0: int = other.find_point(self[0]) + 1   # type: ignore[operator]
         ptr1: int = 1
         while True:
             node1: Node = self._nodes[ptr0]
-            node2: Node = other._nodes[ptr1]
+            node2: Node = other.nodes[ptr1] # type: ignore[attr-defined]
             if node1.value != node2.value:
                 return False
 
             if (
-                node1.left.value != node2.left.value
-                or node1.right.value != node2.right.value  # noqa: W503
+                node1.left.value != node2.left.value    # type: ignore[union-attr]
+                or node1.right.value != node2.right.value  # type: ignore[union-attr]
             ):
                 return False
 
-            ptr0: int = (ptr0 + 1) % len(self)
-            ptr1: int = (ptr1 + 1) % len(other)
+            ptr0 = (ptr0 + 1) % len(self)
+            ptr1 = (ptr1 + 1) % len(other)
             if ptr1 == 0:
                 break
 
@@ -424,7 +417,7 @@ class Ring(IRing):
 
         return self._nodes[index].value
 
-    def __iter__(self) -> Iterable[IPoint]:
+    def __iter__(self) -> Iterable:
         """
         This makes the `Ring` into an iterable.
 
@@ -621,9 +614,20 @@ class Ring(IRing):
             return True
         else:
             return False
+        
+    @property
+    def nodes(self) -> list[Node]:
+        """
+        This gets the nodes of a ring.
+
+        Type:
+            list[Node]
+        """
+
+        return self._nodes
 
     @property
-    def orientation(self) -> Orientation | None:
+    def orientation(self) -> str | None:
         """
         This gets the orientation of the ring.
 
@@ -637,17 +641,19 @@ class Ring(IRing):
             >>> ring.add_point(Point(x=1, y=0, ID=1))
             >>> ring.add_point(Point(x=1, y=1, ID=2))
             >>> ring.orientation
-            <Orientation.CCW: 0>
+            'CCW'
             ```
         """
 
         if not self.closed:
             return None
 
-        if self.area > 0:
-            return Orientation.CCW
-        elif self.area < 0:
-            return Orientation.CW
+        if self.area > 0.0:   # type: ignore[operator]
+            return 'CCW'
+        elif self.area < 0.0: # type: ignore[operator]
+            return 'CW'
+        
+        return None
 
     def add_point(self, point: IPoint) -> None:
         """
@@ -807,12 +813,15 @@ class Ring(IRing):
             ```
         """
 
-        for p, pnt in enumerate(self):
+        for p, pnt in enumerate(self):  # type: ignore
             if point == pnt:
                 return p
+            
+        return None
 
     def find_self_intersections(self) -> list[tuple[int, int, IPoint]]:
-        ...
+        print("I'M NOT IMPLEMENTED YET!!!")
+        return []
 
     def insert_point(self, point: IPoint, location: int) -> None:
         """
@@ -963,7 +972,7 @@ class Ring(IRing):
             if are_collinear(self[n1], self[n2], self[n3]):
                 del idxs[i + 1]
 
-        self._nodes: list[Node] = [self._nodes[idx] for idx in idxs]
+        self._nodes = [self._nodes[idx] for idx in idxs]
         for n, node in enumerate(self._nodes):
             n_before: int = n - 1
             n_after: int = (n + 1) % len(self._nodes)
@@ -1039,4 +1048,5 @@ class Ring(IRing):
                 node.left, node.right = right, left
 
     def split_ring(self) -> list[IRing]:
-        ...
+        print("I'M NOT IMPLEMENTED YET!!!")
+        return []
