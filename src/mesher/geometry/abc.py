@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import abc
-from typing import Iterable, Literal
+from typing import Iterable
 
 
 class IPoint(metaclass=abc.ABCMeta):
@@ -127,7 +127,6 @@ class IRing(metaclass=abc.ABCMeta):
         """This checks if the ring is convex or concave."""
 
         ...
-        
 
     @property
     @abc.abstractmethod

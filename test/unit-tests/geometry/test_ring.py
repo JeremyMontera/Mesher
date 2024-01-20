@@ -314,9 +314,9 @@ def test_ring_orientation(sample_rings, scenario):
     """This tests that the orientation of a closed ring is computed correctly."""
 
     if "closed" in scenario and "CCW" in scenario:
-        assert sample_rings[scenario].orientation == 'CCW'
+        assert sample_rings[scenario].orientation == "CCW"
     elif "closed" in scenario and "CW" in scenario:
-        assert sample_rings[scenario].orientation == 'CW'
+        assert sample_rings[scenario].orientation == "CW"
     elif "open" in scenario:
         assert sample_rings[scenario].orientation is None
 
@@ -467,10 +467,10 @@ def test_ring_remove_collinear():
 @pytest.mark.parametrize(
     "scenario,orient1,orient2",
     [
-        ("closed,CCW,convex", 'CCW', 'CW'),
-        ("closed,CW,convex", 'CW', 'CCW'),
-        ("closed,CCW,concave", 'CCW', 'CW'),
-        ("closed,CW,concave", 'CW', 'CCW'),
+        ("closed,CCW,convex", "CCW", "CW"),
+        ("closed,CW,convex", "CW", "CCW"),
+        ("closed,CCW,concave", "CCW", "CW"),
+        ("closed,CW,concave", "CW", "CCW"),
     ],
 )
 def test_ring_reverse_orientation(

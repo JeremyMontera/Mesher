@@ -119,7 +119,7 @@ class Point(IPoint):
 
         if not isinstance(other, IPoint):
             return NotImplemented
-        
+
         return abs(self._x - other.x) < TOL and abs(self._y - other.y) < TOL
 
     def __str__(self) -> str:

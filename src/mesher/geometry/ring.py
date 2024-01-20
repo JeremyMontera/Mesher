@@ -370,18 +370,18 @@ class Ring(IRing):
 
         if self[0] not in other:
             return False
-        
-        ptr0: int = other.find_point(self[0]) + 1   # type: ignore[operator]
+
+        ptr0: int = other.find_point(self[0]) + 1  # type: ignore[operator]
         ptr1: int = 1
         while True:
             node1: Node = self._nodes[ptr0]
-            node2: Node = other.nodes[ptr1] # type: ignore[attr-defined]
+            node2: Node = other.nodes[ptr1]  # type: ignore[attr-defined]
             if node1.value != node2.value:
                 return False
 
             if (
-                node1.left.value != node2.left.value    # type: ignore[union-attr]
-                or node1.right.value != node2.right.value  # type: ignore[union-attr]
+                node1.left.value != node2.left.value or  # type: ignore[union-attr] # noqa: W504, E501
+                node1.right.value != node2.right.value   # type: ignore[union-attr]
             ):
                 return False
 
@@ -614,7 +614,7 @@ class Ring(IRing):
             return True
         else:
             return False
-        
+
     @property
     def nodes(self) -> list[Node]:
         """
@@ -648,11 +648,11 @@ class Ring(IRing):
         if not self.closed:
             return None
 
-        if self.area > 0.0:   # type: ignore[operator]
-            return 'CCW'
-        elif self.area < 0.0: # type: ignore[operator]
-            return 'CW'
-        
+        if self.area > 0.0:  # type: ignore[operator]
+            return "CCW"
+        elif self.area < 0.0:  # type: ignore[operator]
+            return "CW"
+
         return None
 
     def add_point(self, point: IPoint) -> None:
@@ -816,7 +816,7 @@ class Ring(IRing):
         for p, pnt in enumerate(self):  # type: ignore
             if point == pnt:
                 return p
-            
+
         return None
 
     def find_self_intersections(self) -> list[tuple[int, int, IPoint]]:
