@@ -272,6 +272,7 @@ class Node:
             return self._left is not None
         elif option == NeighborOption.RIGHT:
             return self._right is not None
+        return False
 
 
 class Ring(IRing):
@@ -380,7 +381,7 @@ class Ring(IRing):
                 return False
 
             if (
-                node1.left.value != node2.left.value
+                node1.left.value != node2.left.value  # type: ignore[union-attr]
                 or node1.right.value  # type: ignore[union-attr] # noqa: W503, W504, E501
                 != node2.right.value  # type: ignore[union-attr] # noqa: W503, W504, E501
             ):
@@ -1049,5 +1050,5 @@ class Ring(IRing):
                 node.left, node.right = right, left
 
     def split_ring(self) -> list[IRing]:
-        print("I'M NOT IMPLEMENTED YET!!! Check later")
+        print("I'M NOT IMPLEMENTED YET!!!")
         return []
