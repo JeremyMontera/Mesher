@@ -1048,5 +1048,5 @@ class Ring(IRing):
                 node.left, node.right = right, left
 
     def split_ring(self) -> list[IRing]:
-        print("I'M NOT IMPLEMENTED YET!!!")
+        print("I'M NOT IMPLEMENTED YET!!! Check later")
         return []
