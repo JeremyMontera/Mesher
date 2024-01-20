@@ -56,3 +56,8 @@ mesh 8.5 - file reader/writer                       x
 mesh 9 - write system tests                         x
     (1) separate unittests and system tests         x
     (2) write ring duplicates removal test          x
+
+mesh 10 - install pre-commit hooks and mypy         x
+    (1) install pre-commit hooks                    x
+    (2) install mypy at same time                   x
+    (3) run mypy over source/test                   x

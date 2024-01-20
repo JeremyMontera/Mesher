@@ -10,7 +10,7 @@ class IReader(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def read(filename: str | pathlib.Path) -> list[IRing]:
+    def read(filename: str | pathlib.Path) -> dict[str | None, IRing]:
         """
         Read point data from file and load it into figures.
 

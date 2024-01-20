@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import abc
-from typing import Iterable, Literal
+from typing import Iterable
 
 
 class IPoint(metaclass=abc.ABCMeta):
@@ -21,7 +21,7 @@ class IPoint(metaclass=abc.ABCMeta):
         ...
 
     @abc.abstractmethod
-    def __eq__(self, other: IPoint) -> bool:
+    def __eq__(self, other: object) -> bool:
         """This checks to see if two points have the same x- and y-positions (within a
         certain tolerance) regardless of their ID."""
 
@@ -78,7 +78,7 @@ class IRing(metaclass=abc.ABCMeta):
         ...
 
     @abc.abstractmethod
-    def __eq__(self, other: IRing) -> bool:
+    def __eq__(self, other: object) -> bool:
         """This checks if two rings are equal within tolerance."""
 
         ...
@@ -130,7 +130,7 @@ class IRing(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def orientation(self) -> Literal | None:
+    def orientation(self) -> str | None:
         """This gets the orientation of the ring."""
 
         ...
